@@ -8,3 +8,4 @@ chmod -R 777 /var/named
 chgrp -R named /var/named/
 chgrp -R named /etc/named/
 systemctl restart named
+systemctl status named
