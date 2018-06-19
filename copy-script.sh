@@ -1,10 +1,9 @@
 #!/bin/bash
-su
-rm -rf /var/named/*
-rm /etc/named/named.con
-cp named.conf /etc/named/
-cp -r ./* -t /var/named
-chmod -R 777 /var/named
-chgrp -R named /var/named/
-chgrp -R named /etc/named/
-./usr/bin/systemctl restart named
+sudo rm -rf /var/named/*
+sudo rm /etc/named/named.con
+sudo cp named.conf /etc/named/
+sudo cp -r ./* -t /var/named
+sudo chmod -R 777 /var/named
+sudo chgrp -R named /var/named/
+sudo chgrp -R named /etc/named/
+sudo ./usr/bin/systemctl restart named
