@@ -1,0 +1,353 @@
+#************************************************************
+#	Fonction : quitter
+#	Objectif : Quitter le programme 
+#	Notes	 :
+#************************************************************
+function quitter
+{
+clear
+echo -e "Goodbye..? oh no, please.\n Can't we go back to page one \n and do it all over again?"
+sleep 2
+clear 
+exit
+}
+#************************************************************
+#	Fonction : utilisateur
+#	Objectif : Afficher les utilisateur connecté à la machine
+#	Notes	 : sous menu maintenance option  1
+#************************************************************
+function utilisateur
+{
+clear
+w 
+echo ""
+echo ""
+}
+
+
+#************************************************************
+#	Fonction : memInfo
+#	Objectif : Afficher l'utilisation de la mémoire par les processus
+#	Notes	 : sous menu maintenance option 2
+#************************************************************
+function memInfo
+{
+clear
+cat /proc/meminfo 
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : procInfo
+#	Objectif : Afficher tableau d'utilisation des support de stockage lecture/écriture 
+#	Notes	 : sous menu maintenance option 3
+#************************************************************
+function procInfo
+{
+clear
+iostat
+echo ""
+echo ""
+}
+#************************************************************
+#	Fonction : cpuInfo
+#	Objectif : Afficher de informations sur le cpu
+#	Notes	 : sous menu maintenance option 4
+#************************************************************
+function cpuInfo
+{
+clear
+lscpu
+echo ""
+echo ""
+}
+#************************************************************
+#	Fonction : noyauInfo
+#	Objectif : Afficher la version du noyau
+#	Notes	 : sous menu maintenance option 5
+#************************************************************
+function noyauInfo
+{
+clear
+uname -a
+echo ""
+echo ""
+}
+
+
+
+#************************************************************
+#	Fonction : Utilisation
+#	Objectif : Afficher l'utilisation du disque par les fichier du dossier /etc/
+#	Notes	 : sous menu disque 1
+#************************************************************
+function utilisation
+{
+clear
+du -h -k /etc/ | less
+}
+
+
+#************************************************************
+#	Fonction : fichier
+#	Objectif : Afficher les informations du système de fichier
+#	Notes	 : sous menu disque 2
+#************************************************************
+function fichier
+{
+clear
+df -h -k
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : socketEcouteLocal
+#	Objectif : Afficher les informations des socket ouvert en ecoute
+#				sur le serveur
+#	Notes	 : sous menu reseau 1
+#************************************************************
+function socketEcouteLocal
+{
+clear
+netstat -l | grep LISTEN
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : socketDistant
+#	Objectif : Afficher les informations des socket ouvert
+#				pour une adresse ip
+#	Notes	 : sous menu reseau 2
+#************************************************************
+function socketDistant
+{
+clear
+echo "entrez une adresse ip pour y vérifier les socket ouvert"
+echo "nmap doit etre installer sur la machine"
+read adresse
+nmap $adresse | grep -e open -e PORT
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : pageDistante
+#	Objectif : Afficher une page distante spécifier par l'utilisateur
+#	Notes	 : sous menu reseau 3
+#************************************************************
+function pageDistante
+{
+clear
+echo -e "entrez une adresse ip pour obtenir la page html"
+read adresse
+page=$(wget $adresse)
+echo $page
+echo ""
+echo ""
+}
+
+
+#************************************************************
+#	Fonction : serveurCourriel
+#	Objectif : afficher le serveur qui reçois les courriel
+#	Notes	 : sous menu reseau 4
+#************************************************************
+function serveurCourriel
+{
+clear
+echo -e "entrez un nom de domaine pour obtenir son serveur de courriel"
+read nomDomaine
+nslookup -type=mx $nomDomaine 
+echo ""
+echo ""
+}
+
+
+
+#************************************************************
+#	Fonction : serveurDeNom
+#	Objectif : 
+#	Notes	 : sous menu reseau 5
+#************************************************************
+function serveurDeNom
+{
+clear
+echo -e "entrez un nom de domaine pour obtenir le serveur DNS propriétaire"
+read nomDomaine
+nslookup $nomDomaine
+echo ""
+echo ""
+}
+
+
+
+#************************************************************
+#	Fonction : crondd
+#	Objectif : Afficher les informations des processus
+#			   exécution et les détails des threads
+#	Notes	 :
+#************************************************************
+function crondd
+{
+clear
+id=$(pgrep crond)
+lsof -p $id 
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : processus
+#	Objectif : Afficher les informations des processus
+#			   exécution et les détails des threads
+#	Notes	 :
+#************************************************************
+function processus
+{
+clear
+top -H 
+echo ""
+echo ""
+}
+
+#************************************************************
+#	Fonction : Sous menu maison
+#	Objectif : Accéder aux commandes maison
+#	Notes	 :
+#************************************************************
+function menuMaison
+{
+clear
+while :
+do
+	echo -e "1- obtenir les utilisateur connecté sur la machine"
+	echo -e "2- obtenir des informations sur la mémoire utlisé par les processus du serveur"
+	echo -e "3- tableau d'utilisation des support de stockage lecture/écriture"
+	echo -e "4- obtenir des information sur le cpu"
+	echo -e "5- obtenir le nom de la machine et la version du noyau"
+	echo -e "6- retour au menu principal"
+
+	read option
+	
+	case $option in 
+		1) utilisateur;;
+		2) memInfo;;
+		3) procInfo;;
+		4) cpuInfo;;
+		5) noyauInfo;; 
+		6)
+			clear
+			break;;
+	esac
+done
+
+}
+
+
+#************************************************************
+#	Fonction : Sous menu disque
+#	Objectif : Accéder aux commandes disque
+#	Notes	 :
+#************************************************************
+function menuDisque
+{
+clear
+while :
+do
+	echo -e "1- Utilisation     appuyer sur q pour quitter la lecture"
+	echo -e "2- Fichier"
+	echo -e "3- Retour au menu principal"
+	
+	read option
+	case $option in
+		1) utilisation;;
+		2) fichier;;
+		3)
+			clear
+			break;;
+	esac
+done
+}
+
+#************************************************************
+#	Fonction : Sous menu Réseau
+#	Objectif : Accéder aux commandes réseaux
+#	Notes	 :
+#************************************************************
+function menuReseau
+{
+clear
+while :
+do
+	echo -e "1- Socket ouvert en écoute"
+	echo -e "2- Socket ouvert distant"
+	echo -e "3- Page distante"
+	echo -e "4- serveur de noms"
+	echo -e "5- serveur courriel"
+	echo -e "6- retour au menu principal"
+
+	read option
+		case $option in
+			1)socketEcouteLocal;;
+			2)socketDistant;;
+			3)pageDistante;;
+			4)serveurDeNom;;
+			5)serveurCourriel;;
+			6)
+				clear
+				break;;
+		esac
+done
+}
+
+#************************************************************
+#	Fonction : Sous menu Système
+#	Objectif : Accéder aux commandes système
+#	Notes	 :
+#************************************************************
+function menuSysteme
+{
+clear
+while :
+	do
+		echo -e "1- top"
+		echo -e "2- crond"
+		echo -e "3- retour au menu principal"
+		read option
+		case $option in
+			1)processus;;
+			2)crondd;; 
+			3)
+				clear
+				break;;
+		esac
+done
+}
+
+
+#************************************************************
+#	Fonction : Menu principal
+#	Objectif : accéder au sous-menu 
+#	Notes	 :
+#************************************************************
+clear
+while :
+do
+	echo -e "1- Système"
+	echo -e "2- Réseau"
+	echo -e "3- Disque"
+	echo -e "4- Maintenance"
+	echo -e "5- Quitter"
+	read option
+
+	case $option in 
+		1) menuSysteme;;
+		2) menuReseau;;
+		3) menuDisque;;
+		4) menuMaison;;
+		5) quitter;;
+	esac
+done

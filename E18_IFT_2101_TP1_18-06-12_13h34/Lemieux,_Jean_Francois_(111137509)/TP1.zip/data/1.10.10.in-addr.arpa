@@ -1,0 +1,12 @@
+$TTL    604800
+evilcorpca.local. IN      SOA     fichiers webmaster.evilcorpca.com. (
+                     2006020201 ; Serial
+                         604800 ; Refresh
+                          86400 ; Retry
+                        2419200 ; Expire
+                         604800); Negative Cache TTL
+;
+fichiers    IN      A       10.10.1.89
+passerelle  IN      A       10.10.1.1
+
+hipchat     IN      A       10.10.1.88

@@ -1,0 +1,246 @@
+#!/bin/bash
+menu_principal="Menu Principal \n 1 - Système \n 2 - Réseau \n 3 - Disque \n 4 - Recherche \n 5 - Quitter \n Entrez votre sélection: "
+menu_systeme="1 - top \n2 - crond \n3 - Revenir au menu principal \nEntrez votre sélection: "
+menu_reseau="1 -  Socket en écoute (LISTENING) localement \n2 - Socket ouverts (distant) \n3 - Page distante \n4 - Serveurs de noms \n5 - Serveur courriel \n6 - Revenir au menu principal \nEntrez votre sélection"
+menu_disque="1 - Utilisation \n2 - Fichiers \n3 - Revenir au menu principal \nEntrez votre sélection"
+menu_moi="1 - Recherche de fichier\n2 - Recherche dans fichier\n3 - Revenir au menu principal \nEntrez votre sélection"
+mon_top(){
+	ps -eLF
+}
+mon_crond(){
+	lsof -c crond	
+}
+sockets_ecoute(){
+	netstat -l
+}
+sockets_ouverts(){
+local addresse
+echo -e "Entrez l'adresse IP de la machine dont vous voulez connaître les ports ouverts:"
+read addresse
+nmap $addresse
+}
+page_distante(){
+	echo "Fonction page distante"
+	local addresse
+	echo -e "Entrez la page dont vous voulez afficher le contenu"
+	read addresse
+	exec 6<>/dev/tcp/$addresse/80
+	echo -e "GET / HTTP/1.1\r\nhost: $addresse\r\nConnection: close\r\n\r\n" >&6
+	cat <&6
+}
+serveurs_noms(){
+	local addresse
+	echo -e "Entrez le nom de domaine dont vous voulez connaitre le nom de domaine du serveur DNS autoritaire (primaire dans ce cas)"
+	read addresse
+	dig $addresse SOA | grep -Po "(?<=SOA\s)(\w|\.)+"
+}
+serveur_courriel(){
+	local addresse 
+	echo -e "Entrez le nom de domaine dont vous voulez connaitre le ou les noms de domaines des serveurs de courriel qui recoivent le courriel pour ce domaine"
+	read addresse
+	local reponse=$(dig +short $addresse MX)
+	echo $reponse
+
+}
+utilisation(){
+	du -a -k /etc | less
+}
+fichiers(){
+	df -h -m
+}
+recherche_fichier(){
+	local sequence
+	echo -e "Entrez la séquence dont vous voulez trouver les fichiers dans le répertoire courant dont le nom la contient"
+	read sequence
+	find . -regex ".*/\w*$sequence\w*"
+}
+recherche_dans_fichier(){
+	local fichier
+	local sequence
+	echo -e "Cette options permet de retourner les lignes d'un fichier qui cotiennent le mot clé demandé"
+	echo -e "Entrez le chemin du fichier désiré "
+	read fichier
+	echo -e "Entrez le mot-clé à chercher "
+	read sequence
+	grep -Pon $sequence $fichier
+}
+ma_fonction2(){
+	echo "ma_fonction2"
+}
+#Début du main
+while :
+do
+	echo -e $menu_principal
+	read opt1 opt2
+	clear
+	if [ -n "$opt2" ];
+	then
+		#Après exécution de l'option, on reste au menu principale
+		case $opt1 in
+			1)
+				case $opt2 in
+					1)
+						mon_top
+						;;
+					2)
+						mon_crond
+						;;
+					*) echo -e "Il n'existe pas de fonctionalité au numéro $opt2 dans le sous menu système"		
+				esac
+				;;
+			2)
+				case $opt2 in
+					1)
+						sockets_ecoute
+						;;
+					2)
+						sockets_ouverts
+						;;
+					3)
+						page_distante
+						;;
+					4)
+						serveurs_noms
+						;;
+					5)
+						serveur_courriel
+						;;											
+					*) echo -e "Il n'existe pas de fonctionalité au numéro $opt2 dans le sous menu réseau"		
+				esac
+				;;
+			3)
+				case $opt2 in
+					1)
+						utilisation
+						;;
+					2)
+						fichiers
+						;;
+					*) echo -e "Il n'existe pas de fonctionalité au numéro $opt2 dans le sous menu disque"		
+				esac
+				;;
+			4)
+				case $opt2 in
+					1)
+						recherche_fichier
+						;;
+					2) 
+						recherche_dans_fichier
+						;;
+					*) echo -e "Il n'existe pas de fonctionalité au numéro $opt2 dans le sous menu à définir"		
+				esac
+				;;							
+			5)
+				echo "Au revoir"
+				sleep 2
+				clear
+				exit
+				;;
+			*)
+				echo "Le sous-menu demandé n'existe pas \n"			
+		esac
+	else
+		case $opt1 in
+			1)
+				echo -e $menu_systeme
+				read opt2
+				clear
+				while [[ $opt2 != 3 ]]; do
+					clear
+					case $opt2 in
+						1)
+							mon_top
+							;;
+						2)
+							mon_crond
+							;;
+						*) echo -e "Veuillez sélectionner un nombre de 1 à 3"							
+					esac
+					echo -e $menu_systeme
+					read opt2	
+				done
+				clear
+				;;
+			2)
+				echo -e $menu_reseau
+				read opt2
+				clear
+				while [[ $opt2 != 6 ]]; do
+					clear
+					case $opt2 in
+						1)
+							sockets_ecoute
+							;;
+						2)
+							sockets_ouverts
+							;;
+						3)
+							page_distante
+							;;
+						4)
+							serveurs_noms
+							;;
+						5)
+							serveur_courriel
+							;;
+						*)
+							echo -e "Veuillez sélectionner un nombre de 1 à 6"
+							;;																																			
+					esac
+					echo -e $menu_reseau
+					read opt2
+				done
+				clear
+				;;
+			3)
+				echo -e $menu_disque
+				read opt2
+				clear
+				while [[ $opt2 != 3 ]]; do
+					clear
+					case $opt2 in
+						1)
+							utilisation
+							;;
+						2)
+							fichiers
+							;;
+						*) echo -e "Veuillez sélectionner un nombre de 1 à 3"							
+					esac
+					echo -e $menu_disque
+					read opt2	
+				done
+				clear
+				;;
+			4)
+				echo -e $menu_moi
+				read opt2
+				clear
+				while [[ $opt2 != 3 ]]; do
+					clear
+					case $opt2 in
+						1)
+							recherche_fichier
+							;;
+						2)
+							recherche_dans_fichier
+							;;
+						*) echo -e "Veuillez sélectionner un nombre de 1 à 3"							
+					esac
+					echo -e $menu_moi
+					read opt2	
+				done
+				clear
+				;;
+			5)
+				echo "Au revoir"
+				sleep 2
+				clear
+				exit
+				;;
+			*)
+				echo -e "Veuillez sélectionner un nombre de 1 à 5"
+				;;																
+		esac
+	fi
+done 

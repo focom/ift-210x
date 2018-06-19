@@ -1,0 +1,235 @@
+#!/bin/bash
+
+# Utilise les nombres en paramètres ou affiche le menu
+function mainMenu {
+	choix=""
+
+	if [ "$1" != "" ];
+	then
+		choix="$1"
+
+		if [ "$2" != "" ];
+		then
+			deuxiemeChoix="$2"
+		else
+			deuxiemeChoix=""
+		fi
+	else
+		showMenu
+		deuxiemeChoix=""
+	fi
+
+	if [ "$choix" = "1" ];
+	then
+		system "$deuxiemeChoix"
+	elif [ "$choix" = "2" ];
+	then
+		reseau "$deuxiemeChoix"
+	elif [ "$choix" = "3" ];
+	then
+		disque "$deuxiemeChoix"
+	elif [ "$choix" = "4" ];
+	then
+		journal "$deuxiemeChoix"
+	elif [ "$choix" = "5" ];
+	then
+		clear
+		echo "Fermeture du programme..."
+		sleep 2
+		exit
+	else
+		showMenu
+	fi
+}
+
+# Affiche le menu
+function showMenu {
+	clear
+
+	echo "1-Système"
+	echo "2-Réseau"
+	echo "3-Disque"
+	echo "4-Journaux"
+	echo "5-Quitter"
+
+	read choix
+}
+
+# Menu système
+function system {
+	choix2=""
+
+	if [ "$1" != "" ];
+	then
+		choix2="$1"
+	else
+		while [ "$choix2" = "" ]
+		do
+			clear
+			echo "1-top"
+			echo "2-crond"
+			echo "3-Revenir au menu principal"
+			read choix2
+		done
+	fi
+
+	if [ "$choix2" = "1" ];
+	then
+		clear
+		top -H
+		system
+	elif [ "$choix2" = "2" ];
+	then
+		clear
+		lsof -p $(pidof crond) | less
+		system
+	elif [ "$choix2" = "3" ];
+	then
+		mainMenu
+	else
+		system
+	fi
+}
+
+# Menu réseau
+function reseau {
+	choix2=""
+
+	if [ "$1" != "" ];
+	then
+		choix2="$1"
+	else
+		while [ "$choix2" = "" ]
+		do
+			clear
+			echo "1-Socket en écoute (LISTENING) localement"
+			echo "2-Socket ouverts (distant)"
+			echo "3-Page distante"
+			echo "4-Serveur de noms"
+			echo "5-Serveur courriel"
+			echo "6-Revenir au menu principal"
+			read choix2
+		done
+	fi
+
+	if [ "$choix2" = "1" ];
+	then
+		clear
+		netstat -a | grep LISTENING | less
+		reseau
+	elif [ "$choix2" = "2" ];
+	then
+		clear
+		ip=""
+		echo "Entrez une adresse IP"
+		read ip
+		nmap -v -sT "$ip" | less
+		reseau
+	elif [ "$choix2" = "3" ];
+	then
+		clear
+		ip=""
+		echo "Entrez une adresse IP"
+		read ip
+		wget -O - "$ip" | less
+		reseau
+	elif [ "$choix2" = "4" ];
+	then
+		clear
+		domaine=""
+		echo "Entrez un nom de domaine"
+		read domaine
+		dig -t ns "$domaine" | less
+		reseau
+	elif [ "$choix2" = "5" ];
+	then
+		clear
+		domaine=""
+		echo "Entrez un nom de domaine"
+		read domaine
+		dig -t MX "$domaine" | less
+		reseau
+	elif [ "$choix2" = "6" ];
+	then
+		mainMenu
+	else
+		reseau
+	fi
+}
+
+# Menu disque
+function disque {
+	choix2=""
+
+	if [ "$1" != "" ];
+	then
+		choix2="$1"
+	else
+		while [ "$choix2" = "" ]
+		do
+			clear
+			echo "1-Utilisation"
+			echo "2-Fichiers"
+			echo "3-Revenir au menu principal"
+			read choix2
+		done
+	fi
+
+	if [ "$choix2" = "1" ];
+	then
+		clear
+		ls -la --block-size=K /etc | more
+		disque
+	elif [ "$choix2" = "2" ];
+	then
+		clear
+		df -k | less
+		df -h | less
+		disque
+	elif [ "$choix2" = "3" ];
+	then
+		mainMenu
+	else
+		disque
+	fi
+}
+
+# Menu journal (affiche des types de journaux système)
+function journal {
+	choix2=""
+
+	if [ "$1" != "" ];
+	then
+		choix2="$1"
+	else
+		while [ "$choix2" = "" ]
+		do
+			clear
+			echo "1-Messages du noyau"
+			echo "2-Journal de systemd"
+			echo "3-Revenir au menu principal"
+			read choix2
+		done
+	fi
+
+	if [ "$choix2" = "1" ];
+	then
+		clear
+		dmesg | less
+		journal
+	elif [ "$choix2" = "2" ];
+	then
+		clear
+		journalctl
+		journal
+	elif [ "$choix2" = "3" ];
+	then
+		mainMenu
+	else
+		journal
+	fi
+
+}
+
+# Commence par afficher le menu en lui passant les paramètres donnés en ligne de commande
+mainMenu "$1" "$2"

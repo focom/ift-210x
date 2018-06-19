@@ -1,0 +1,11 @@
+@   IN   SOA localhost. dnsmaster.evilcorpca.com. (
+	1 ; serial
+	8H ; refresh
+	2H ; retry
+	1W ; expire
+	1D ; minimum
+);
+   IN NS ns1
+ns1 IN A 199.48.22.28
+fichiers IN A 10.10.1.89
+passerelle IN A 10.10.1.1 

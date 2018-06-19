@@ -1,0 +1,15 @@
+@           IN  SOA ns1.evilcorpca.com. root.evilcorpca.com. (
+                2018090601              ;Serial
+                3600                    ;Refresh
+                1800                    ;Retry
+                604800                  ;Expire
+                86400                   ;Minimum TTL
+            )
+;
+
+            IN  NS  ns1.evilcorpca.com.
+            IN  NS  ns2.evilcorpca.com.
+89          IN  PTR fichiers.evilcorpca.local.
+1           IN  PTR passerelle.evilcorpca.local.
+32          IN  PTR print.evilcorpca.local.
+

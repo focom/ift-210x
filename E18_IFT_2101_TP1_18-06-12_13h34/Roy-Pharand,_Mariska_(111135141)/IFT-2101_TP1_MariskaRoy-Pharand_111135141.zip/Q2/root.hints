@@ -1,0 +1,32 @@
+
+; <<>> DiG 9.9.4-RedHat-9.9.4-61.el7 <<>> . ns
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 24235
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;.				IN	NS
+
+;; ANSWER SECTION:
+.			506365	IN	NS	b.root-servers.net.
+.			506365	IN	NS	c.root-servers.net.
+.			506365	IN	NS	k.root-servers.net.
+.			506365	IN	NS	d.root-servers.net.
+.			506365	IN	NS	j.root-servers.net.
+.			506365	IN	NS	h.root-servers.net.
+.			506365	IN	NS	m.root-servers.net.
+.			506365	IN	NS	l.root-servers.net.
+.			506365	IN	NS	a.root-servers.net.
+.			506365	IN	NS	f.root-servers.net.
+.			506365	IN	NS	e.root-servers.net.
+.			506365	IN	NS	i.root-servers.net.
+.			506365	IN	NS	g.root-servers.net.
+
+;; Query time: 161 msec
+;; SERVER: 192.168.2.1#53(192.168.2.1)
+;; WHEN: dim mai 27 06:13:44 EDT 2018
+;; MSG SIZE  rcvd: 239
+

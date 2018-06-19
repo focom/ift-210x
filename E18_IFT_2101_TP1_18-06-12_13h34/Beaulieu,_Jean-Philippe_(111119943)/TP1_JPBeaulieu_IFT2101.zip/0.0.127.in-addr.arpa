@@ -1,0 +1,14 @@
+; Résolution inverse ZONE LOCALHOST (Localhost 127.0.0.1) : 0.0.127.in-addr.arpa
+; 127.0.0.1
+;
+@       IN      	SOA     ns1.evilcorpca.com. DNSMaster.evilcorpca.com. (
+							2018060201       ; serial#, date 2 juin 2018
+							3H      ; Refresh period
+							1H      ; Retry refresh
+							1W      ; Expire period
+							1D )    ; Minimum TTL
+;
+							 IN      NS      ns1.evilcorpca.com.
+		 					 IN      NS      ns2.evilcorpca.com.
+;
+1        IN      		PTR     localhost.  			 ; Pointeur sur 127.0.0.1 (localhost) ***OK

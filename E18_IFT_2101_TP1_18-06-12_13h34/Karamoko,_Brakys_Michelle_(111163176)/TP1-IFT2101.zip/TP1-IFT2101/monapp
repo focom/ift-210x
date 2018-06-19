@@ -1,0 +1,510 @@
+#************************************************************************** 
+#	Fichier		: monapp 
+#	Projet		: Travail Pratique 1
+#	Auteur		: Brakys Michelle Karamoko 
+#	NI		: 111 163 176
+#	Cours   	: IFT-2101 
+#	École  		: Universite Laval
+#	Session  	: Eté 2018
+#	Notes  		: Script bash d'une application en console
+#			 permettant d'afficher certaines informations
+#			 et d'éffectuer certaines opérations sur le serveur
+#***************************************************************************
+
+
+
+#***************************************************************************
+# 	Fonction  	: fonctionTop
+#  	Objectif 	: Afficher la liste et les détails des processus en exécution
+# 	Notes  		: Retour au sous-menu après 5 itérations
+#***************************************************************************
+function fonctionTop
+{
+  clear
+  echo "---------------------------------------------------------------"
+  echo "                Liste des processus en exécution"
+  echo "---------------------------------------------------------------"
+  sleep 1  
+  top -n 5 #Termine après 5 iterations
+  sleep 1
+}
+
+
+
+#***************************************************************************
+# 	Fonction  	: fonctionCrond
+#  	Objectif 	: Affiche la liste des fichiers ouverts
+#                         par le service crond
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function fonctionCrond
+{
+  clear
+  echo "----------------------------------------------------------------"
+  echo "       Liste des fichiers ouverts par le service crond"
+  echo "----------------------------------------------------------------"  
+  crontab -l 
+  echo "----------------------------------------------------------------"  
+  sleep 5
+}
+
+
+
+
+#***************************************************************************
+# 	Fonction  	: systeme
+#  	Objectif 	: Vide l'écran et affiche le sous-menu Système
+# 	Notes  		: 
+#***************************************************************************
+function systeme
+{
+while :
+do
+    clear
+    cat<<Sys
+    ==============================
+           Sous-menu Système
+    ------------------------------
+ 
+    Option (1) :  Top
+    Option (2) :  Crond
+    Option (3) :  Menu principal
+ 
+   ==============================   
+   Entrez le numero de choix :
+Sys
+    read choix 
+    case "$choix" in
+    "1") fonctionTop ;;
+    "2") fonctionCrond ;;
+    "3") break ;; 
+    *)   echo "Option invalide. Veuillez reéssayer!" ;;
+    esac
+   	
+done
+}
+
+
+###########################################################################
+###########################################################################
+
+
+
+#***************************************************************************
+# 	Fonction  	: socketEnEcoute
+#  	Objectif 	: Liste tous les ports ouverts en écoute
+#                         sur le serveur
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function socketEnEcoute 
+{
+  clear
+  echo "-----------------------------------------------------------------------"
+  echo "              Liste des socket en écoute sur le serveur           "
+  echo "-----------------------------------------------------------------------"
+  netstat -lx 
+  echo "-----------------------------------------------------------------------"
+  sleep 5
+  clear
+}
+
+
+
+
+#***************************************************************************
+# 	Fonction  	: socketOuverts
+#  	Objectif 	: Verifie et Affiche tous les ports ouverts
+#    			  d'une adresse IP 
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function socketOuverts
+{
+  clear
+  echo " Entrer une adresse IP : "
+  read adresse
+  echo " "
+  echo -e "-------------------------------------------------------------------"
+  echo -e "            Les ports ouverts sur l'adresse $adresse "
+  echo -e "-------------------------------------------------------------------"
+  echo -e "NUMERO DE PORT \t\t STATUS"
+  echo -e "-------------------------------------------------------------------"
+
+  debut=1
+  fin=65535
+  for ((port=$debut; port<=$fin; port++))
+  do
+   2>/dev/null echo >/dev/tcp/$adresse/$port 
+      if [ "$?" -eq 0 ]; then
+
+        echo -e "Port $port \t\t OUVERT \n"
+      
+      fi
+  done 
+  echo -e "-------------------------------------------------------------------"
+  sleep 5
+}
+
+
+
+#***************************************************************************
+# 	Fonction  	: pageDistante
+#  	Objectif 	: Affiche le contenu HTML d'une page web 
+# 	Notes  		: Demande une adresse IP en entrée
+#***************************************************************************
+function pageDistante
+{
+  clear
+  echo "Entrer une adresse IP : "
+  read adresse
+  #domaine=$(dig +short -x $adresse)
+  #nomDomaine=$(echo $domaine | cut -d ' ' -f 1)
+ # echo " "
+  echo -e "------------------------------------------------------------------"
+  echo -e "                          CONTENU HTML "
+  echo -e "------------------------------------------------------------------"
+  GET $adresse  
+  echo " "
+  echo -e "---------------------------------------------------------------------"
+  sleep 10
+
+}
+
+
+#***************************************************************************
+# 	Fonction  	: serveurDeNoms
+#  	Objectif 	: Affiche le serveur DNS autoritaire pour
+#			  un nom de domaine
+# 	Notes  		: Demande un nom de domaine en entrée 
+#***************************************************************************
+function serveurDeNoms
+{
+  clear
+  echo "Entrez un nom de domaine "
+  read nomDomaine
+  echo " "
+  echo "---------------------------------------------------"
+  echo "Le serveur DNS autoritaire pour $nomDomaine est : "
+  dig +short SOA $nomDomaine | cut -d' ' -f1
+  echo "---------------------------------------------------"
+  sleep 5
+
+}
+
+
+#***************************************************************************
+# 	Fonction  	: serveurCourriel
+#  	Objectif 	: Affiche le serveur qui reçoit les courriels
+# 	Notes  		: Demande un nom de domaine en entrée
+#***************************************************************************
+function serveurCourriel 
+{
+  clear
+  echo "Entrez un nom de domaine pour obtenir son serveur Courriel :"
+  read nomDomaine  
+  echo " "
+  echo "-------------------------------------------------------------------"
+  host -t mx $nomDomaine
+  echo "-------------------------------------------------------------------"
+  sleep 5
+
+}
+
+
+#***************************************************************************
+# 	Fonction  	: Reseau
+#  	Objectif 	: Vide l'écran et affiche le sous-menu Réseau
+# 	Notes  		: 
+#***************************************************************************
+function reseau
+{
+while :
+do
+    clear
+    cat<<Res
+    ==============================
+           Sous-menu Réseau
+    ------------------------------
+ 
+    Option (1) :  Socket en écoute localement
+    Option (2) :  Socket ouverts
+    Option (3) :  Page distante
+    Option (4) :  Serveur de noms
+    Option (5) :  Serveur courriel
+    Option (6) :  Menu princical
+ 
+   ==============================   
+   Entrez le numero de choix :
+Res
+    read choix 
+    case "$choix" in
+    "1")  socketEnEcoute ;;
+    "2")  socketOuverts ;;
+    "3")  pageDistante ;;
+    "4")  serveurDeNoms ;;
+    "5")  serveurCourriel ;;
+    "6")  break ;; 
+    *)  echo "Option invalide. Veuillez reéssayer!" ;;
+    esac
+
+done
+
+}
+
+
+###########################################################################
+###########################################################################
+
+ 
+#***************************************************************************
+# 	Fonction  	: utilisation
+#  	Objectif 	: Affiche les statistiques de l'utilisation du 
+#			  en ko et un affichage page par page
+# 	Notes  		: 
+#***************************************************************************
+function utilisation 
+{
+  clear
+  echo "   Veuillez utiliser la touche 'espace' pour parcourir les pages"
+  echo " "
+  echo "    Statistiques Utilisation du disque en kilo-octets"
+  echo "-------------------------------------------------------------"
+  sleep 2
+  du -akh /etc | more
+  clear
+}
+
+
+ 
+#***************************************************************************
+# 	Fonction  	: systemeFichiers
+#  	Objectif 	: Affiche les informations du système de fichiers
+#			  en 6 colonnes par bloc de 1024 octets
+# 	Notes  		: 
+#***************************************************************************
+function systemeFichiers
+{
+  clear
+  echo "            Informations du système de fichiers"
+  echo "-----------------------------------------------------------------"  
+  df
+  echo "-----------------------------------------------------------------"
+  sleep 5
+}
+
+
+
+#***************************************************************************
+# 	Fonction  	: disque
+#  	Objectif 	: Vide l'écran et affiche le sous-menu Système
+# 	Notes  		: 
+#***************************************************************************
+function disque
+{
+while :
+do
+    clear
+    cat<<Dis
+    ==============================
+           Sous-menu Disque
+    ------------------------------
+ 
+    Option (1) :  Utilisation du disque
+    Option (2) :  Fichiers
+    Option (3) :  Menu principal
+ 
+   ==============================   
+   Entrez le numero de choix :
+Dis
+    read choix
+    case "$choix" in
+    "1")  utilisation ;;
+    "2")  systemeFichiers ;;
+    "3")  break ;; 
+    *)  echo "Option invalide. Veuillez reéssayer!" ;;
+    esac
+
+done
+
+}
+
+
+#######################################################################
+#######################################################################
+
+
+ 
+#***************************************************************************
+# 	Fonction  	: etatMemoire 
+#  	Objectif 	: Affiche les informations sur la memoire RAM
+#			  en en giga octets 
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function etatMemoire
+{
+  clear
+  echo "                            Informations sur la memoire RAM "
+  echo "----------------------------------------------------------------------------------------"
+  free + -k 
+  echo "----------------------------------------------------------------------------------------"
+  sleep 5
+}
+
+
+
+#***************************************************************************
+# 	Fonction  	: tableIn
+#  	Objectif 	: Affiche la table de tous les interfaces reseau  
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function tableIn
+{
+  clear
+  echo "---------------------------------------------------------------------------------------------"
+  netstat -i
+  echo "---------------------------------------------------------------------------------------------"
+  sleep 5
+}
+
+
+ 
+#***************************************************************************
+# 	Fonction  	: tableArp
+#  	Objectif 	: Affiche la table de correspondance entre 
+#			  les adresses IP et les adresses MAC 
+#			  des machines du réseau
+# 	Notes  		: Retour au sous-menu après 5 secondes
+#***************************************************************************
+function tableArp
+{
+  clear
+  echo "                                   Table ARP"
+  echo "------------------------------------------------------------------------------------------------"
+  arp -v
+  echo "------------------------------------------------------------------------------------------------"
+  sleep 5
+
+}
+
+
+
+
+
+#***************************************************************************
+# 	Fonction  	: modules
+#  	Objectif 	: Affiche la liste des modules chargés par le noyau page par page
+# 	Notes  		: 
+#***************************************************************************
+function modules
+{
+  clear
+  echo "                         Appuyer la touche 'espace' pour pacourir les pages"
+  echo " "
+  echo" "  
+  echo "                                   Modules chargés par le noyau"
+  echo "------------------------------------------------------------------------------------------------"
+  lsmod | more 
+  echo "------------------------------------------------------------------------------------------------"
+
+}
+
+
+
+ 
+ 
+#***************************************************************************
+# 	Fonction  	: autreOption
+#	Objectif	: Vide l'écran et affiche le sous-menu Autres
+# 	Notes  		: 
+#***************************************************************************
+function autreOption 
+{
+while :
+do
+    clear
+    cat<<Aut
+    ==============================
+           Sous-menu Autres
+    ------------------------------
+ 
+    Option (1) : Etat de la memoire RAM
+    Option (2) : Interfaces Noyau  
+    Option (3) : Table ARP
+    Option (4) : Modules Noyau
+    Option (5) : Menu principal
+ 
+   ==============================   
+   Entrez le numero de choix :
+Aut
+    read choix 
+    case "$choix" in
+    "1") etatMemoire ;;
+    "2") tableIn ;;
+    "3") tableArp ;;
+    "4") modules ;;
+    "5") break ;; 
+    *)  echo "Option invalide. Veuillez reéssayer!" ;;
+    esac
+
+done
+
+}
+
+
+
+
+#***************************************************************************
+# 	Fonction  	: quitter
+#  	Objectif 	: Vide l'écran et Permet de revenir au prompt
+# 	Notes  		: 
+#***************************************************************************
+
+function quitter
+{
+     clear
+      echo "=============================================="
+      echo "|          Aurevoir et A bientôt             |"
+      echo "=============================================="
+      sleep 2
+      clear
+      exit
+}
+
+
+
+
+
+#***************************************************************************
+# 	Fonction  	: 
+#  	Objectif 	: Menu Principal
+# 	Notes  		: Permet l'affichage du menu principal
+#***************************************************************************
+
+while :
+do
+    clear
+    cat<<Men
+    ==============================
+    Bienvenue dans l'application 
+    ------------------------------
+ 
+    Option (1) :  Système
+    Option (2) :  Réseau
+    Option (3) :  Disque
+    Option (4) :  Autres
+    Option (5) :  Quitter
+ 
+   ==============================   
+   Entrez le numero de choix :
+Men
+    read choix
+    case "$choix" in
+    "1")  systeme ;;
+    "2")  reseau ;;
+    "3")  disque ;;
+    "4")  autreOption ;;
+    "5")  quitter ;; 
+    *)  echo "Option invalide. Veillez reéssayer!" ;;
+    esac
+
+done
+

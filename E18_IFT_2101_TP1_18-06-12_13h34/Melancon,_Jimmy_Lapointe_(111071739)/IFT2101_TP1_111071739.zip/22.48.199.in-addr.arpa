@@ -1,0 +1,17 @@
+$TTL 3H
+@	IN	 SOA	ns1.evilcorpca.com. adminserveur.evilcorpca.com. (
+			201806052	; serial
+			8H		; refresh
+			2H		; retry
+			1W		; expire
+			1D )		; minimum
+;
+@	IN	NS	ns1.evilcorpca.local.
+@	IN	NS	ns2.evilcorpca.local.
+28	IN	PTR	ns1.evilcorpca.local.
+98	IN	PTR	ns2.evilcorpca.local.
+99	IN	PTR	evilcorpca.com.
+100	IN	PTR	secure
+77	IN	PTR	vpn
+36	IN	PTR	webmail
+55	IN	PTR	courriel

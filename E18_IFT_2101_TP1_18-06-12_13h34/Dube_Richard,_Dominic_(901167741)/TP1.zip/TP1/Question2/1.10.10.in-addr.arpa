@@ -1,0 +1,14 @@
+; Fichier pour le domaine local
+@       IN 	     SOA    ns1.evilcorpca.com.   ns1Master.evilcorpca.com. (
+                     2018060301         ; serial, date + #seq
+                     8H                 ; refresh, 8 heures
+                     2H                 ; retry, 2 heures
+                     1W                 ; expire, 1 semaine
+                     1D)                ; minimum 1 jour
+;
+
+        IN   NS      ns1.evilcorpca.com. ; adresse du dns
+1       IN   PTR     passerelle.evilcorpca.local ; adresse passerelle
+89	IN   PTR     fichiers.evilcorpca.local ; adresse fichier interne
+2	IN   PTR     paye.evilcorpca.local ; adresse pour le système de paye
+

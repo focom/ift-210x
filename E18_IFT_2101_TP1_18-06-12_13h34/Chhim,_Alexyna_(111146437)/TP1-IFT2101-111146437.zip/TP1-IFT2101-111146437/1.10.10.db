@@ -1,0 +1,10 @@
+@ IN SOA evlicorpca.local. admin.evlicorpca.local. (
+	2000101805	; serial
+	8H		; refresh
+	2H		; retry
+	1W		; expire
+	1D)		; minimum
+;
+
+89	IN 	PTR	fichiers
+1	IN	PTR	passerelle

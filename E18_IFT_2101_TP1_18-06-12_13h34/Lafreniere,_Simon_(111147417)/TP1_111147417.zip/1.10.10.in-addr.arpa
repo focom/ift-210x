@@ -1,0 +1,11 @@
+@		IN	SOA	ns1.evilcorpca.com	admin.evilcorpca.com (
+				2018052701	;
+				8H		;
+				2H		;
+				1W		;
+				1D		;
+		IN	NS	ns1.evilcorpca.com.
+		IN	NS	ns2.evilcorpca.com.
+1		IN	PTR	gw.evilcorpca.com.
+5		IN	PTR	intranet.evilcorpca.com.
+89		IN	PTR	fichiers.evilcorpca.com.

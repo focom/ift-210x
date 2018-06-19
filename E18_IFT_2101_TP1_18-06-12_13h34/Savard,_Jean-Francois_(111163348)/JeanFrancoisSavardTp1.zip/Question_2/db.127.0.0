@@ -1,0 +1,11 @@
+@	IN	SOA	ns1.evilcorpca.com.	admin.evilcorpca.com. (
+			2018060101	; serial
+			8H		; refresh
+			2H		; retry
+			1W		; expire
+			1D )		; minimum
+;
+	IN	NS	ns1.evilcorpca.com.
+	IN	NS	ns2.evilcorpca.com.
+;
+1	IN	PTR	localhost.

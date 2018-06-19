@@ -1,0 +1,16 @@
+; Résolution inverse ZONE DOMAINE LOCAL(privé 10.10.1.0/24) : 1.10.10.in-addr.arpa
+; 10.10.1.x
+;
+$TTL 3h
+@       IN      	SOA     ns1.evilcorpca.local. DNSMaster.evilcorpca.local. (
+							2018060201       ; serial#, date 2 juin 2018
+							3h      ; Refresh
+							1h      ; Retry
+							1w      ; Expire
+							1h )    ; Minimum
+;
+							 IN      NS      ns1.evilcorpca.com.
+		 					 IN      NS      ns2.evilcorpca.com.
+;
+89       IN 	 		PTR 	fichier.evilcorpca.local.      ; Pointeur sur 10.10.1.89 (Serveur fichier interne)
+1        IN 	 		PTR 	passerelle.evilcorpca.local.   ; Pointeur sur 10.10.1.1 (Passerelle interne)

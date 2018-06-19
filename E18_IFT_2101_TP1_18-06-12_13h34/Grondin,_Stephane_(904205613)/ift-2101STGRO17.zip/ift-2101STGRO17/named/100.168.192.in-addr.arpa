@@ -1,0 +1,12 @@
+@		IN		SOA		ns1.evilcorpa.com.		root.evilcorpa.com. (
+2000101804	;	serial,	date + # sequentiel
+	8H	 ; refresh, 8 heures
+	2H	 ; retry, 2 heures
+	1W	 ; expire, 1 semaine
+	1D	 ) ; minimum, 1 jour
+;
+	IN		NS		ns1.evilcorpa.com.
+	IN		NS		ns2.evilcorpa.com.
+	;
+	;
+100		IN		PTR paiement.evilcorpca.com.

@@ -1,0 +1,13 @@
+@           IN  SOA ns1.evilcorpca.com. root.evilcorpca.com. (
+                2018090601              ;Serial
+                3600                    ;Refresh
+                1800                    ;Retry
+                604800                  ;Expire
+                86400                   ;Minimum TTL
+            )
+;
+            IN  NS  ns1.evilcorpca.com.     ;Address of primary Name Server
+            IN  NS  ns2.evilcorpca.com.     ;Address of secondary Name Server
+fichiers    IN  A   10.10.1.89
+passerelle  IN  A   10.10.1.1
+print       IN  A   10.10.1.32

@@ -1,0 +1,316 @@
+#!/usr/bin/bash
+
+#************************************************
+#  Fichier	: TP1.sh
+#  Projet	: Travail pratique 1
+#  Auteur	: Yoan Michaud-Perron
+#  Groupe	: 
+#  Cours	: IFT-2101
+#  École	: Université Laval
+#  Session	: E2018
+#  Notes	: 
+#************************************************
+
+#************************************************
+#  Fonction     : ajoutUtil
+#  Objectif     : Ajoute un utilisateur
+#  Notes        :
+#************************************************
+function ajoutUtil
+{
+	echo -n "Entrez le nom de l'utilisateur: "
+        read nom
+        useradd $nom
+        echo "Utilisateur ajouté"
+        sleep 2
+	return
+}
+
+#************************************************
+#  Fonction     : suppUtil
+#  Objectif     : supprime un utilisateur
+#  Notes        :
+#************************************************
+function suppUtil
+{
+        echo -n "Entrez le nom de l'utilisateur: "
+        read nom
+        userdel $nom
+        echo "Utilisateur supprimé"
+        sleep 2
+	return
+}
+
+#************************************************
+#  Fonction     : serveurCourriels
+#  Objectif     : Affiche le serveur de courreils
+#  Notes        :
+#************************************************
+function serveurCourriels
+{
+        echo -n "Entrez un nom de domaine: "
+        read domaine
+        dig +short MX $domaine
+        echo -e "\n\nAppuyez sur une touche pour terminer."
+        read
+	return
+}
+
+#************************************************
+#  Fonction     : serveurNoms
+#  Objectif     : Affiche le serveur DNS autoritaire
+#  Notes        :
+#************************************************
+function serveurNoms
+{
+	echo -n "Entrez un nom de domaine: "
+	read domaine
+	dig +short SOA $domaine | cut -d' ' -f1
+	echo -e "\n\nAppuyez sur une touche pour terminer."
+        read
+	return
+}
+
+#************************************************
+#  Fonction     : testPorts
+#  Objectif     : Test les port ouvert sur un serveur distant
+#  Notes        :
+#************************************************
+function testPorts
+{
+	echo -n "Entrer une adresse IP: "
+        read adresse
+	port_debut=1
+	port_fin=65535
+
+	for (( port=$port_debut; port<=$port_fin; port++ ))
+	do
+		timeout 1 bash -c "echo >/dev/tcp/$adresse/$port" && echo "port $port ouvert"	
+	done
+
+	echo -e "\n\nAppuyez sur une touche pour terminer."
+        read
+	return
+}
+
+#************************************************
+#  Fonction     : afficheContenu
+#  Objectif     : Affiche le contenu d'une page distante
+#  Notes        : 
+#************************************************
+function afficheContenu
+{
+	echo -n "Entrer une adresse IP: "
+	read adresse
+	
+	exec 3<>/dev/tcp/$adresse/80
+	echo -e "GET / HTTP/1.1\r\nhost: $adresse\r\nConnection: close\r\n\r\n" >&3
+	cat <&3
+	echo -e "\n\nAppuyez sur une touche pour terminer."
+	read
+	#exec 3<&-	
+	return
+}
+
+
+#************************************************
+#  Fonction	: systeme
+#  Objectif	: Affiche le menu Système
+#  Notes	: 
+#************************************************
+function systeme
+{
+	nb_param=$#
+
+	while :
+	do
+		clear
+		echo "1. top"
+		echo "2. crond"
+		echo "3. Revenir au menu principal"
+		echo -n  ">> "
+
+		if [ $nb_param -eq 1 ]
+		then
+			nb_param=0
+			choix=$1
+			echo "$choix"
+		else
+			read choix
+		fi
+
+		case $choix in
+			1) top -H ;;
+			2) lsof -p $(pgrep crond) ; echo -e "\n\nAppuyez sur une touche pour terminer." ; read ;;
+			3) break ;;
+			*) echo "Choix invalide" ; sleep 2 ;;
+		esac
+	done
+	return
+}
+
+#************************************************
+#  Fonction	: reseau
+#  Objectif	: Affiche le menu Réseau
+#  Notes        : 
+#************************************************
+function reseau
+{
+	nb_param=$#
+	
+	while :
+        do
+          	clear
+                echo "1. Socket en écoute (LISTENING) localement"
+                echo "2. Socket ouverts (distant)"
+                echo "3. Page distante"
+		echo "4. Serveur de noms"
+		echo "5. Serveur courriel"
+		echo "6. Revenir au menu principal"
+                echo -n  ">> "
+
+		if [ $nb_param -eq 1 ]
+                then
+                    	nb_param=0
+                        choix=$1
+			echo "$choix"
+                else
+                    	read choix
+                fi
+                
+		
+                case $choix in
+                        1) netstat -a | grep LISTENING ; echo -e "\n\nAppuyez sur une touche pour terminer." ; read ;;
+                        2) testPorts ;;
+			3) afficheContenu ;;
+			4) serveurNoms ;;
+			5) serveurCourriels ;;
+                        6) break ;;
+                        *) echo "Choix invalide" ; sleep 2 ;;
+                esac
+        done
+	return
+}
+
+#************************************************
+#  Fonction	: disque
+#  Objectif	: Affiche le menu Disque
+#  Notes        : 
+#************************************************
+function disque
+{
+	nb_param=$#
+
+	while :
+        do
+          	clear
+                echo "1. Utilisation"
+                echo "2. Fichiers"
+                echo "3. Revenir au menu principal"
+                echo -n  ">> "
+
+		if [ $nb_param -eq 1 ]
+                then
+                    	nb_param=0
+                        choix=$1
+			echo "$choix"
+                else
+                    	read choix
+                fi
+                
+
+                case $choix in
+                        1) du -ak /etc | more ; echo -e "\n\nAppuyez sur une touche pour terminer." ; read ;;
+                        2) df --block-size=1024 -h ; echo -e "\n\nAppuyez sur une touche pour terminer." ; read ;;
+                        3) break ;;
+                        *) echo "Choix invalide" ; sleep 2 ;;
+                esac
+        done
+	return
+}
+
+#************************************************
+#  Fonction     : utilisateur
+#  Objectif     : Affiche le menu Utilisateur
+#  Notes        :
+#************************************************
+function utilisateur
+{
+	nb_param=$#
+
+	while :
+        do
+          	clear
+                echo "1. Ajouter utilisateur"
+                echo "2. Supprimer utilisateur"
+		echo "3. Afficher utilisateurs"
+                echo "4. Revenir au menu principal"
+                echo -n  ">> "
+
+		if [ $nb_param -eq 1 ]
+                then
+                    	nb_param=0
+                        choix=$1
+			echo "$choix"
+                else
+                    	read choix
+                fi
+                
+
+                case $choix in
+                        1) ajoutUtil ;;
+                        2) suppUtil ;;
+			3) more /etc/passwd ; echo -e "\n\nAppuyez sur une touche pour terminer." ; read ;;
+                        4) break ;;
+                        *) echo "Choix invalide" ; sleep 2 ;;
+                esac
+        done
+	return
+}
+
+premiere_fois=1
+
+while :
+do
+	clear
+	echo "1-Système"
+	echo "2-Réseau"
+	echo "3-Disque"
+	echo "4-Utilisateur"
+	echo "5-Quitter"
+	echo -n  ">> "
+	
+	if [ $premiere_fois -eq 1 ]
+	then
+		premiere_fois=0
+		case $# in
+			0) read choix ;;
+			1) choix=$1 ;;
+			2) case $1 in
+                		1) systeme $2 ; continue ;;
+                		2) reseau $2 ; continue ;;
+               			3) disque $2 ; continue ;;
+                		4) utilisateur $2 ; continue ;;
+                		5) break ;;
+                		*) echo "Choix invalide" ; sleep 2 ;;
+			   esac ;;
+			*) clear ; echo "Trop d'argument" ; sleep 2 ; exit ;;
+		esac
+	else
+		read choix
+	fi
+	
+	case $choix in
+		1) systeme ;;
+		2) reseau ;;
+		3) disque ;;
+		4) utilisateur ;;
+		5) break ;;
+		*) echo "Choix invalide" ; sleep 2 ;;
+	esac
+
+done
+
+echo "Merci et au revoir."
+sleep 2
+clear

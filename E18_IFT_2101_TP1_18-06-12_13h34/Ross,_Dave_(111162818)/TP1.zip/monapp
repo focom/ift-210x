@@ -1,0 +1,399 @@
+#**********************************************************
+#   Fichier : monapp 
+#   Projet : TP1 
+#   Auteur : Dave Ross 
+#   Cours : IFT-2101 Protocoles et technologies Internet
+#   École : Université Laval
+#   Session : Été 2018
+#**********************************************************
+
+#**********************************************************
+#   Fonction : systeme
+#   Objectif : Vide l'ecran et affiche le sous-menu systeme
+#**********************************************************
+function systeme
+{
+        clear
+	while :
+	do
+		echo -e "MENU SYSTÈME \n"
+		echo -e "1-top"
+		echo -e "2-crond"
+		echo -e "3-Back \n"
+        	read choix
+
+		case $choix in
+			1) top ;;
+			2) crond ;;
+			3) main ;;
+		esac
+	done
+}
+
+#**********************************************************
+#   Fonction : top
+#   Objectif : affiche les processus en exécution avec le
+#              détail des threads
+#**********************************************************
+function top
+{
+	clear
+	threads=$(ps -e -T)
+	echo -e "$threads \n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Système."
+	read choix
+	case $choix in
+		r) systeme ;;
+	esac
+}
+
+#**********************************************************
+#   Fonction : crond
+#   Objectif : affiche la liste des fichiers ouverts par le
+#              service crond
+#**********************************************************
+function crond
+{
+        clear
+        crondfiles=$(crontab -u root -l)
+        echo -e "$crondfiles \n"
+        echo -e "Appuyer sur la touche r pour revenir au sous-menu Système."
+        read choix
+        case $choix in
+                r) systeme ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : reseau
+#   Objectif : Vide l'ecran et affiche le sous-menu reseau
+#**********************************************************
+function reseau
+{
+        clear
+        while :
+        do
+                echo -e "MENU RÉSEAU \n"
+                echo -e "1-Socket en écoute"
+                echo -e "2-Socket ouverts (distant)"
+                echo -e "3-Page distante"
+		echo -e "4-Serveur de noms"
+                echo -e "5-Serveur courriel"
+                echo -e "6-Back \n"
+                read choix
+
+                case $choix in
+                        1) listensocket ;;
+                        2) opensocket ;;
+                        3) webpage ;;
+			4) nameserver ;;
+			5) email ;;
+			6) main ;;
+                esac
+        done
+}
+
+
+#**********************************************************
+#   Fonction : listensocket
+#   Objectif : Liste tous les ports ouverts en écoute sur
+#              le serveur
+#**********************************************************
+function listensocket
+{
+        clear
+        listening=$(netstat -l)
+        echo -e "$listening \n"
+        echo -e "Appuyer sur la touche r pour revenir au sous-menu Réseau."
+        read choix
+        case $choix in
+                r) reseau ;;
+        esac
+}
+
+
+#**********************************************************
+#   Fonction : opensocket
+#   Objectif : Demande une adresse IP et y Liste tous les 
+#              ports ouverts sur le serveur
+#**********************************************************
+function opensocket
+{
+        clear
+	echo -e "Veuillez entrer une adresse IP à vérifier : \n"
+        read ip
+	echo -e "Veuillez patienter... \n"
+	open=$(nmap -sU -O $ip)
+	echo -e "$open\n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Réseau."
+        read choix
+        case $choix in
+                r) reseau ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : webpage
+#   Objectif : Demande une adresse IP et va y quérir la
+#              page web et affiche son contenu HTML
+#**********************************************************
+function webpage
+{
+        clear
+        echo -e "Veuillez entrer une adresse IP pour fetcher le code HTML : \n"
+	read ip
+	html=$(curl -4 -L $ip)
+	echo -e "$html \n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Réseau."
+        read choix
+        case $choix in
+                r) reseau ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : nameserver
+#   Objectif : Demande un nom de domaine et affiche le
+#              serveur DNS autoritaire pour ce nom de
+#              domaine
+#**********************************************************
+function nameserver
+{
+        clear
+        echo -e "Veuillez entrer un nom de domaine pour vérifier ses nameservers : \n"
+	read site
+	nameserv=$(dig +short NS $site)
+	echo -e "$nameserv \n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Réseau."
+        read choix
+        case $choix in
+                r) reseau ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : email
+#   Objectif : Demande un nom de domaine et affiche le 
+#              serveur qui recoit les courriels pour ce
+#	       domaine
+#**********************************************************
+function email
+{
+        clear
+	echo -e "Entrer un nom de domaine pour afficher le serveur de courriels \n"
+        echo -e "Veuillez entrer un nom de domaine : \n"
+	read domain
+	mailserv=$(host -t mx $domain)
+	echo -e "$mailserv \n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Réseau."
+        read choix
+        case $choix in
+                r) reseau ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : disque
+#   Objectif : Vide l'ecran et affiche le sous-menu disque
+#**********************************************************
+function disque
+{
+        clear
+        while :
+        do
+                echo -e "MENU DISQUE \n"
+                echo -e "1-Utilisation"
+                echo -e "2-Fichiers"
+                echo -e "3-Back \n"
+                read choix
+
+                case $choix in
+                        1) usage ;;
+                        2) files ;;
+                        3) main ;;
+                esac
+        done
+}
+
+#**********************************************************
+#   Fonction : usage
+#   Objectif : affiche les statistiques d'utilisation de
+#              tous les fichiers du dossier /etc page par
+#              page, en ko
+#**********************************************************
+function usage
+{
+        clear
+	usage=$(du /etc)
+	echo -e "Voici l'utilisation en ko du répertoire /etc \n"
+	echo -e "Calcul en cours...\n"
+	sleep 2
+	echo -e "$usage"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Disque."
+        read choix
+        case $choix in
+                r) disque ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : files
+#   Objectif : affiche les informations du système de
+#              fichiers en 6 colonnes par bloc de 1 mb
+#              (1024o) et que ce soit lisible
+#**********************************************************
+function files
+{
+        clear
+        filesys=$(df)
+        echo -e "Voici le système de fichiers \n"
+        echo -e "Calcul en cours...\n"
+        sleep 2
+        echo -e "$filesys"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Disque."
+        read choix
+        case $choix in
+                r) disque ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : usagers
+#   Objectif : Fonctions pour affichers les usagers
+#**********************************************************
+function usagers
+{
+        clear
+        while :
+        do
+                echo -e "MENU USAGERS \n"
+                echo -e "1-Afficher usagers"
+                echo -e "2-Usager courant"
+                echo -e "3-Back \n"
+                read choix
+
+                case $choix in
+                        1) showusers ;;
+                        2) info ;;
+                        3) main ;;
+                esac
+        done
+}
+
+#**********************************************************
+#   Fonction : showusers
+#   Objectif : Affiche les users du système
+#**********************************************************
+function showusers
+{
+        clear
+        echo -e "Voici les usagers présentement configurés dans votre système : \n"
+	comptes=$(users)	
+	echo -e "$comptes \n"
+	me=$(whoami)
+	echo -e "Vous êtes l'usager : $me \n"
+	echo -e "Appuyer sur la touche r pour revenir au sous-menu Usagers"
+        read choix
+        case $choix in
+                r) usagers ;;
+        esac
+}
+
+#**********************************************************
+#   Fonction : info
+#   Objectif : Afficher les information d'un usager
+#**********************************************************
+function info
+{
+        clear
+        echo -e "Ramassage des informations sur l'usager courant... Veuillez patienter...\n"
+	sleep 2
+	info=$(id $whoami)
+	echo -e "$info \n"
+        echo -e "Appuyer sur la touche r pour revenir au sous-menu Usagers"
+        read choix
+        case $choix in
+                r) usagers ;;
+        esac
+}
+
+
+#**********************************************************
+#   Fonction : quit
+#   Objectif : Quitter l'application après avoir dit
+#              aurevoir à l'usager.
+#**********************************************************
+function quit
+{
+        clear
+	echo -e "Aurevoir, merci d'avoir utilisé cette application bash!"
+	echo -e "bash > EVERYTHING \n"
+        sleep 2
+	exit
+}
+
+#**********************************************************
+#   Fonction : main
+#   Objectif : Code de la boucle principale
+#**********************************************************
+function main
+while :
+do
+        echo -e "MENU PRINCIPAL \n"
+        echo -e "1-Système"
+        echo -e "2-Réseau"
+        echo -e "3-Disque"
+        echo -e "4-Usagers"
+        echo -e "5-Quitter \n"
+        read choix
+
+        case $choix in
+                1) systeme ;;
+                2) reseau ;;
+                3) disque ;;
+                4) usagers ;;
+                5) quit ;;
+        esac
+done
+
+
+
+#**********************************************************
+#   Objectif : Boucle principale
+#**********************************************************
+clear
+case "$1:$2" in
+
+1:'')
+	systeme ;;
+1:1)
+	top ;;
+1:2)
+	crond ;;
+2:'')
+	reseau ;;
+2:1)
+        listensocket ;;
+2:2)
+        opensocket ;;
+2:3)
+        webpage ;;
+2:4)
+        nameserver ;;
+2:5)
+        email ;;
+3:'')
+	disque ;;
+3:1)
+        usage ;;
+3:2)
+        files ;;
+4:'')
+	usagers ;;
+4:1)
+	showusers ;;
+4:2)
+	info ;;
+esac
+main
+done

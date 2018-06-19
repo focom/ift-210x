@@ -1,0 +1,23 @@
+@	IN	SOA	ns1.evilcorpca.com.	dnsmaster.evilcorpca.com. (
+			2018052701		; serial, date + # séquentiel
+			8H			; refresh, 8 heures
+			30M			; retry, 30 minutes
+			1W			; expire, 1 semaine
+			1D			; minimum, 1 jour
+);
+
+	IN	NS	ns1.evilcorpca.com.
+	IN	NS	ns2.evilcorpca.com.
+
+28	IN	PTR	ns1.evilcorpca.com.
+
+36	IN	PTR	webmail.evilcorpca.com.
+
+55	IN	PTR	courriel.evilcorpca.com.
+
+77	IN	PTR	vpn.evilcorpca.com.
+
+97	IN	PTR	www.evilcorpca.com.
+98	IN	PTR	ns2.evilcorpca.com.
+
+100	IN	PTR	secure.evilcorpca.com.

@@ -1,0 +1,19 @@
+@	 		IN		SOA	dns.evilcorpca.com. dnsmaster.evilcorp.com. ( 
+			1     		;serial (version) 
+			3H    		;refresh period 
+			15M   		;retry refresh this often 
+			1W    		;expiration period 
+			1D)     	;minimum TTL 
+
+
+			IN		NS 	ns1.evilcorpa.com.
+			IN 		NS 	ns2.evilcorpa.com.
+
+			IN 		MX 	10 courriel.evilcorpca.com
+
+
+dns1 	 	IN 		A 	199.48.22.28
+dns2 	 	IN 		A 	199.48.22.98
+webmail	 	IN 		A 	199.48.22.36
+courriel 	IN		A	199.48.22.55
+secure	 	IN		A	199.48.22.100

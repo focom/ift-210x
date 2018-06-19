@@ -1,0 +1,9 @@
+@  		IN    	SOA     dns.evilcorpca.com. DNSMaster.evilcorpca.com. (
+                        2018060801      	        		;serial date + #seq
+                        8H            	         			;refresh, 8 heures
+                        2H                    				;retry, 2 heures
+			1W                    				;expire, 1 semaine
+                        1D )                				;minimum, 1 jour
+		IN	NS		ns1				;Adresse du DNS primaire
+		IN	NS		ns2				;Adresse du DNS secondaire
+100		IN	PTR		http://secure.evilcorpca.com	;Passerelle de paiement

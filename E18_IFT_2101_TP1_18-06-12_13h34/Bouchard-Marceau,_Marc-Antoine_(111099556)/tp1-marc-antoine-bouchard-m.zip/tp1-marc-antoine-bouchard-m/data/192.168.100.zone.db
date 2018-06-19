@@ -1,0 +1,6 @@
+@ IN SOA localhost. dnsmaster.evilcorpca.com. 1123 3H 15M 1W 1D
+	IN NS ns1.evilcorpca.com.
+	IN NS ns2.evilcorpca.com.
+28 IN PTR ns1.evilcorpca.com.
+98 IN PTR ns2.evilcorpca.com.
+100 IN PTR secure.evilcorpca.com.

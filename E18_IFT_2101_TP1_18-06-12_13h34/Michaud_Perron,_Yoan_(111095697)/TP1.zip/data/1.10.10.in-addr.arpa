@@ -1,0 +1,5 @@
+@ IN SOA ns1.evilcorpca.com. yoan.michaud-perron.1.ulaval.ca 2 3H 15M 1W 1D
+	IN	NS	ns1.evilcorpca.com.
+	IN	NS	ns2.evilcorpca.com.
+89	IN	PTR	fichiers.evilcorpca.local.
+1	IN	PTR	passerelle.evilcorpca.local.

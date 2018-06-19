@@ -1,0 +1,129 @@
+# Cours		: IFT-2101 - Protocoles et technologies Internet
+# Session	: Été 2018
+# Projet	: Travail Pratique 1 - Question 1
+# Nom		: Mariska Roy-Pharand
+# Matricule	: 111 135 141
+
+#!/bin/sh
+
+#*******************************************************
+# Fonction	: Sortie
+# Objectif	: Vide l'écran et ferme le programme
+#*******************************************************
+
+function sortie {
+	echo -e "\nÀ la prochaine!"
+	sleep 2
+	clear
+	exit
+}
+
+#*******************************************************
+# Fonction	: Systeme
+# Objectif	: Gère le sous-menu système
+#*******************************************************
+
+function systeme {
+	while :
+	do
+		clear
+
+		echo -e "Sous-menu Système \n"
+		echo -e "Option \t Descrition \n"
+		echo -e "1 \t top"
+		echo -e "2 \t crond\n"
+		echo -e "Appuyez sur n'importe quelle autre touche \npour revenir au menu principal"
+		read choix
+
+		case $choix in
+			1) clear; top; sleep 2;;
+			2) clear; crond; sleep 2;;
+			*) break;;
+		esac
+	done	
+}
+
+#*******************************************************
+# Fonction	: Reseau
+# Objectif	: Gère le sous-menu réseau
+#*******************************************************
+
+function reseau {
+	while :
+	do
+		clear
+
+		echo -e "Sous-menu réseau\n"
+		echo -e "Option \t Description \n"
+		echo -e "1 \t Lister sockets en écoute locale"
+		echo -e "2 \t Lister sockets ouverts sur une machine distance"
+		echo -e "3 \t Quérir page web"
+		echo -e "4 \t Serveur de noms"
+		echo -e "5 \t Serveur courriel \n"
+		echo -e "Appuyer sur n'importe quelle autre touche \npour revenir au menu principal"
+		read choix
+
+		case $choix in
+			1) clear; netstat -l; sleep 2;;
+			2) clear; echo -e "Entrez une adresse IP"; read ip; nc -v -w2 $ip 0-65535; sleep 2;;
+			3) clear; echo -e "Entrez une adresse IP"; read ip; nc $ip 80; GET /; sleep 2;;
+			4) clear; echo -e "Entrez un domaine; read url; dig $url; sleep 2;;
+			5) clear; echo -e "Entrez un domaine; read url; dig mx $url; sleep 2;;
+			*) break;;
+		esac		
+	done
+}
+
+#*******************************************************
+# Fonction	: Disque
+# Objectif	: Gère le sous-menu disque
+#*******************************************************
+
+function disque {
+	while :
+	do	
+		clear
+
+		echo -e "Sous-menu Disque \n"
+		echo -e "Option \t Description \n"
+		echo -e "1 \t Utilisation /etc"
+		echo -e "2 \t Fichiers\n"
+		echo -e "Appuyez sur n'importe quelle autre touche \npour revenir au menu principal"
+		read choix
+
+		case $choix in
+			1) ll /etc | less; sleep 2;;
+			2) echo -e "Commande 2 \n"; sleep 2;;
+			*) break;;
+		esac
+	done
+}
+
+#*******************************************************
+# Fonction	: 
+# Objectif	: Boucle du menu principal
+#*******************************************************
+
+while :
+do
+	clear
+
+	echo -e "MENU PRINCIPAL \n"
+	echo -e "Option \t Description \n"
+	echo -e "1 \t Système"
+	echo -e "2 \t Réseau"
+	echo -e "3 \t Disque"
+	echo -e "4 \t Surprise! :) \n"
+	echo -e "Appuyez sur n'importe quelle autre touche pour quitter \n"
+	echo -e "Votre choix: \c"
+	
+	read choix
+
+	case $choix in
+		1) clear; systeme;;
+		2) clear; reseau;;
+		3) clear; disque;;
+		4) echo -e "Reverse lookup de toutes les adresses du réseau 132.203.189.0/24 en cours."; for x in {1..254..1}; do dig -x 132.203.189.$x | grep -e 132.203.189.$x -e $x.189.203.132; sleep 0.25; done; sleep 5;;
+		*) sortie;;
+	esac
+done

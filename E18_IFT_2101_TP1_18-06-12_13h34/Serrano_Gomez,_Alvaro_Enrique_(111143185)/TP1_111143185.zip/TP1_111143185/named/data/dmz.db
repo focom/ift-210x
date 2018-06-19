@@ -1,0 +1,12 @@
+@		IN	SOA	dns.evilcorpca.com. dnsmaster.evilcorp.com. ( 
+				1     	;serial (version) 
+				3H    	;refresh period 
+				15M   	;retry refresh this often 
+				1W    	;expiration period 
+				1D)     ;minimum TTL 
+
+			IN	NS 	ns1.evilcorpa.com.
+			IN 	NS 	ns2.evilcorpa.com.
+
+
+secure	IN	A	192.168.100.100

@@ -1,0 +1,10 @@
+interne.evilcorp in soa localhost. root (
+	1 ;serial version
+	3H ;refresh period
+	15M ;retry refresh
+	1W ;expiration period
+	1D ;minimum TTL
+	)
+
+
+

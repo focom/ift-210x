@@ -1,0 +1,325 @@
+#**********************************************************
+# fichier	: monapp
+# Projet	: TP1
+# Auteur	: Simon Lafreniere
+# Cours		: IFT-2104
+# École		: Université Laval
+# Session	: été 2018
+#**********************************************************
+
+#**********************************************************
+# Fonction	: sortir
+# Objectif	: Sortir du programme avec un au revoir
+#**********************************************************
+
+function sortie
+{
+	clear
+	which cowsay > /dev/null 2>&1
+	#Cowsay n'est pas installé par default sur la machine virtuel, mais disponible dans 
+	#le repo EPEL - Extra Packages for Enterprise Linux 7 - x86_64
+	if [ $? = 1 ]; then
+		echo -e "Vous devez avoir cowsay d'installé pour voir le message de sortie"
+		echo -e "Disponible dans le repo epel sur redhat/centOS"
+		# Delais de 2 secondes supplémentaires pour avoir le temps de lire le msg d'erreur.
+		sleep 2
+	else
+		cowsay -f tux "Merci d'avoir utilisé monapp! À la prochaine!!"
+	fi
+	sleep 2
+	clear
+	exit
+}
+
+#**********************************************************
+# Fonction      : systeme
+# Objectif      : Sous-menu systeme
+#**********************************************************
+
+function systeme
+{
+	clear
+	echo -e "SYSTÈME \n"
+	echo -e "\t 1 \t\t top"
+	echo -e "\t 2 \t\t crond"
+	echo -e "\t 3 \t\t Retour"
+        echo -e "Votre choix : \c"
+
+	if [ $# = 1 ]; then
+		choix=$1
+	else
+		read choix
+	fi
+
+	case $choix in
+		1) top -H; systeme ;;
+		2) crond ;;
+		3) echo "Retour au menu précédent"; sleep .1 ;;
+		*) echo "Option de sous-menu invalide"; sleep 1; systeme ;;
+	esac
+}
+
+#**********************************************************
+# Fonction      : crond
+# Objectif      : Affiche une liste de fichier ouvert par crond
+#**********************************************************
+
+function crond
+{
+	clear
+	sudo lsof -p $(pidof crond)
+	echo "Appuyer sur entrer pour continuer"
+	read bidon
+	systeme
+}
+
+
+#**********************************************************
+# Fonction      : reseau
+# Objectif      : Sous-menu reseau
+#**********************************************************
+
+function reseau
+{
+	clear
+	echo -e "RÉSEAU \n"
+	echo -e "\t 1 \t\t Socket en écoute localement "
+	echo -e "\t 2 \t\t Socket ouverts(distant)"
+	echo -e "\t 3 \t\t Page distance"
+	echo -e "\t 4 \t\t Serveurs de noms"
+	echo -e "\t 5 \t\t Serveur courriel"
+	echo -e "\t 6 \t\t Retour"
+        echo -e "Votre choix : \c"
+       
+	if [ $# = 1 ]; then
+                choix=$1
+        else
+                read choix
+        fi
+
+	case $choix in
+		1) clear; netstat -l | less; reseau;;
+		2) socketdistant;;
+		3) pagedist;;
+		4) digautho;;
+		5) digMX;;
+		6) echo "Retour au menu précédent"; sleep .1 ;;
+		*) echo "Option de sous-menu invalide"; sleep 1; reseau ;;
+	esac
+}
+
+#**********************************************************
+# Fonction      : socketdistant
+# Objectif      : Utilise nmap pour trouver les port ouvert sur une machine distante
+#**********************************************************
+
+function socketdistant
+{
+	clear
+	which nmap > /dev/null 2>&1
+	if [ $? = 0 ]; then
+		echo -e " entrez une adresse IP: \c"
+		read theIP
+		nmap $theIP
+		echo "Appuyer sur entrer pour continuer"
+		read bidon
+	else
+		echo "Vous devez avoir nmap d'installé"
+	fi
+	reseau
+}
+
+#**********************************************************
+# Fonction      : pagedist
+# Objectif      : affiche le contenu HTML d'une page
+#**********************************************************
+
+function pagedist 
+{
+        clear
+        echo -e "Entrez une URL: \c"
+        read theURL
+        curl $theURL
+        echo "Appuyer sur entrer pour continuer"
+        read bidon
+        reseau
+}
+
+#**********************************************************
+# Fonction      : digautho
+# Objectif      : affiche les serveurs authoritaire d'un nom de domaine
+#**********************************************************
+function digautho
+{
+	clear
+	echo -e "Entrez un nom de domaine: \c"
+	read theDomain
+	dig $theDomain +noall +authority | grep -v \;
+	echo -e "\nAppuyer sur entrer pour coninuer"
+	read bidon
+	reseau
+}
+
+#**********************************************************
+# Fonction      : digMX
+# Objectif      : affiche les serveurs qui recoivent le courriel
+#**********************************************************
+
+function digMX
+{
+        clear
+        echo -e "Entrez un nom de domaine: \c"
+        read theDomain
+        dig $theDomain MX +noall +answer | grep -v \;
+        echo -e "\nAppuyer sur entrer pour coninuer"
+        read bidon
+        reseau
+}
+
+#**********************************************************
+# Fonction      : disque
+# Objectif      : Sous-menu disque
+#**********************************************************
+
+function disque
+{
+	clear
+	echo -e "DISQUE \n"
+	echo -e "\t 1 \t\t Utilisation"
+	echo -e "\t 2 \t\t Fichiers"
+	echo -e "\t 3 \t\t Retour"
+        echo -e "Votre choix : \c"
+
+	if [ $# = 1 ]; then
+                choix=$1
+        else
+                read choix
+        fi
+
+	case $choix in
+		# Seulement les fichiers de /etc? sous dossier?
+		# Nous allons afficher seulement les fichier de /etc sans les sous-dossier
+		1) find /etc -maxdepth 1 -type f -exec du -ak {} + | less; disque ;;
+		2) clear; df -h --block-size=1024; 
+			echo "Appuyer sur entrer pour continuer"; read bidon; disque;;
+		3) echo "Retour au menu précédent"; sleep .1 ;;
+		*) echo "Option de sous-menu invalide"; sleep 1; disque ;;
+	esac
+}
+
+#**********************************************************
+# Fonction      : usager
+# Objectif      : Sous-menu usager -  
+# 		  affiche les usagers humains vs machines
+#**********************************************************
+
+function usager
+{
+
+        clear
+        echo -e "USAGER \n"
+        echo -e "\t 1 \t\t Usagers utilisateurs"
+        echo -e "\t 2 \t\t Usagers machines"
+        echo -e "\t 3 \t\t Retour"
+        echo -e "Votre choix : \c"
+
+        if [ $# = 1 ]; then
+                choix=$1
+        else
+                read choix
+        fi
+
+        case $choix in
+                1) usagerhumain;;
+                2) usagermachine;;
+                3) echo "Retour au menu précédent"; sleep .1 ;;
+                *) echo "Option de sous-menu invalide"; sleep 1; usager ;;
+	esac
+}
+
+#**********************************************************
+# Fonction      : usagerhumain
+# Objectif      : Affiche les usager pour les utilisateur
+# 		en utilisant sed
+#**********************************************************
+
+function usagerhumain
+{
+	clear
+	while read p; do
+                monUser=$(echo $p| cut -d: -f1,3)
+                monId=$(echo $p| cut -d: -f3)
+		if [ $monId -ge 1000 -a $monId -le 9999 ]; then
+			echo -e "Usager: \c"
+			# Il y a des chance d'avoir un mauvais formatage
+			# contrairement a utilisier printf mais pour le plaisir d'utiliser sed
+			echo $monUser | sed 's/:/ \tid: /g' ;
+		fi 
+	done </etc/passwd
+
+	echo "Appuyer sur entrer pour continuer"
+	read bidon
+	usager
+}
+
+#**********************************************************
+# Fonction      : usagermachine
+# Objectif      : Affiche les usager et ID des service accounts
+# 		en utilisant printf
+#**********************************************************
+
+function usagermachine
+{
+        clear
+        while read p; do
+                monUser=$(echo $p| cut -d: -f1)
+		monId=$(echo $p| cut -d: -f3)
+                if [ $monId -lt 1000 ]; then
+			printf "Usager: %-25s id: %s \n" $monUser $monId
+                fi
+        done </etc/passwd
+
+        echo "Appuyer sur entrer pour continuer"
+        read bidon
+        usager
+}
+
+#**********************************************************
+# Debut du code principale
+#**********************************************************
+
+#Prise en charge des arguments au besoin
+if [ $# -ge 1 ]; then
+		 
+	case $1 in
+                1) systeme $2 ;;
+                2) reseau $2 ;;
+                3) disque $2 ;;
+                4) usager $2 ;;
+        esac
+fi
+
+#Boucle principale
+while :
+do
+	clear
+	echo -e "MENU PRINCIPAL \n"
+	echo -e "Entrez votre option \n"
+	echo -e "\t Option \t description \n"
+	echo -e "\t 1 \t\t Système"
+	echo -e "\t 2 \t\t Réseau "
+	echo -e "\t 3 \t\t Disque "
+	echo -e "\t 4 \t\t Usager "
+	echo -e "\t 5 \t\t Quitter \n"
+	echo -e "Votre choix : \c"
+	read choix
+
+	case $choix in
+		1) systeme ;;
+		2) reseau ;;
+		3) disque ;;
+		4) usager ;;
+		5) sortie ;;
+		*) echo "Choix invalide"; sleep 1 ;;
+	esac
+done

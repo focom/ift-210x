@@ -1,0 +1,15 @@
+@	   		IN	SOA	dns.evilcorpca.com. dnsmaster.evilcorp.com. ( 
+					1     	;serial (version) 
+					3H    	;refresh period 
+					15M   	;retry refresh this often 
+					1W    	;expiration period 
+					1D)     ;minimum TTL 
+;
+			IN	NS 	ns1.evilcorpa.com.
+			IN 	NS 	ns2.evilcorpa.com.
+;
+			IN 	MX 	10 courriel.evilcorpca.com
+;
+gw 	   		IN 	A 	10.10.1.1
+fichiers    IN	A	10.10.1.89
+passerelle  IN	CNAME	gw

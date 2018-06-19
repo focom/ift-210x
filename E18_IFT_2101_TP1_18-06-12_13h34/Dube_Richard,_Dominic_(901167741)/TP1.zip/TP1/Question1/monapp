@@ -1,0 +1,375 @@
+***************************************************************************
+#   Fichier     : monapp
+#   Projet      : TP1
+#   Auteur      : Dominic Dubé Richard
+#   Groupe      : IFT-2101
+#   Cours       : Protocole et technologies Internet
+#   École       : Université Laval
+#   Session     : Été 2018
+#***************************************************************************
+
+#!/bin/bash
+
+#**************************************************************************
+#   Fonction: top
+#   Objectif: Affiche les processus en execution et détail des threads
+#   Notes:
+#**************************************************************************
+
+function topFonc
+
+{
+   clear
+   echo -e "Les processus en execution et le detail des threads. Q pour quitter"
+   sleep 3
+   top -H
+   return  
+}
+
+#*****************************************************************************
+#Fonction: crond
+#Objectif: Afficher la liste des fichiers ouverts par crond
+#Notes:
+#*****************************************************************************
+
+function crondFonc
+{
+
+   clear
+   echo -e "Voici les fichiers ouverts par le service crond"
+   sleep 3
+   crontab -l
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+}
+
+#*****************************************************************************
+#Fonction: systeme
+#Objectif: Vider l'écran et afficher le sous-menu système
+#Notes:
+#*****************************************************************************
+function systeme
+{
+
+while :
+do
+
+   clear
+   echo -e "Choisissez une des options suivantes \n"
+   echo -e "1 - top: affiche les processus en execution \n"
+   echo -e "2 - crond: Affiche la liste des fichiers ouverts par ce service \n"
+   echo -e "3 - Revenir au menu principal \n"
+   
+   read choixSysteme2
+
+   case $choixSysteme2 in
+	1) topFonc;;
+	2) crondFonc;;
+	3) break;;
+	*) echo -e "Choisissez l'option 1,2 ou 3"
+	   sleep 2;;
+
+   esac
+
+done
+
+return
+
+}
+
+#*****************************************************************************
+#Fonction: sortie
+#Objectif:Sortir du programme.
+#Note:
+#*****************************************************************************
+
+function sortie
+{
+   echo -e "Merci d'avoir utilisé notre service d'information serveur! À bientôt!!!"
+   sleep 2
+   clear
+   exit
+}
+
+#*****************************************************************************
+#Fonction: serveurCourriel
+#Objectif: Afficher le serveur qui reçoit courriels pour ce domaine.
+#Notes:
+#*****************************************************************************
+
+function serveurCourriel
+{
+   clear
+   echo -e "Quelle est le nom de domaine pour lequel vous voulez le serveur courriel?"
+   read adresse
+   dig $adresse MX +short
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+}
+
+
+#*****************************************************************************
+#Fonction: serveurNom
+#Objectif: Afficher DNS autoritaire pour un nom de domaine
+#Notes:
+#*****************************************************************************
+
+function serveurNom
+{
+   clear
+   echo -e "Quelle est le nom de domaine pour lequel vous voulez le serveur DNS?"
+   read adresse
+   dig $adresse +noall +answer +short
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+}
+
+#*****************************************************************************
+#Fonction: pageDistante
+#Objectif: Demander adresse IP et trouver page web et affiche HTML
+#Notes:
+#*****************************************************************************
+
+function pageDistante
+{
+   clear
+   echo -e "Quelle est l'adresse IP de la page web à afficher?"
+   read adresse
+   content=$(wget $adresse -q -O -)
+   echo -e $content
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+ 
+}
+
+
+#*****************************************************************************
+#Fonction: socketOuvert
+#Objectif: Demander adresse IP affiche port ouvert.
+#Notes:
+#*****************************************************************************
+
+function socketOuvert
+{
+   clear
+   echo -e "Quelle est l'adresse IP que vous voulez avoir les ports d'ouverts?"
+   read adresse
+   port_debut=1
+   port_fin=65535
+
+   for((port=$port_debut; port<=$port_fin; port++))
+   do
+      (echo >/dev/tpc/$adresse/$port) >/dev/null 2>&1 && echo "$port ouvert"
+   done
+
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+}
+
+
+#*****************************************************************************
+#Fonction: ecouteSocket
+#Objectif: Lister tous les ports ouverts en écoute sur serveur
+#Notes:
+#*****************************************************************************
+
+function ecouteSocket
+{
+
+   clear
+   echo -e "Voici les ports ouverts en écoute sur le serveur"
+   sleep 3
+   netstat -l
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+
+}
+
+#*****************************************************************************
+#Fonction: reseau
+#Objectif: Vider l'écran et afficher le sous-menu Réseau
+#Notes:
+#*****************************************************************************
+
+function reseau
+{
+
+while :
+do
+
+   clear
+   echo -e "Choisissez une des options suivantes \n"
+   echo -e "1 - Lister les ports ouverts en écoute sur le serveur. \n"
+   echo -e "2 - Demande une adresse IP et vérifie les ports ouverts \n"
+   echo -e "3 - Demande adresse IP et trouver page web. \n"
+   echo -e "4 - Demande un nom de domaine et affiche le serveur DNS. \n"
+   echo -e "5 - Demande nom de domaine et affiche le serveur qui reçoit courriel \n"
+   echo -e "6 - Revenir au menu principal \n"
+
+   read choixSysteme3
+
+   case $choixSysteme3 in
+        1) ecouteSocket;;
+        2) socketOuvert "1";;
+	3) pageDistante;;
+	4) serveurNom;;
+	5) serveurCourriel;;
+        6) break;;
+	*) echo -e "Vous devez choisir entre les options 1,2,3,4,5,6" 
+	   sleep 2;;
+
+   esac
+
+done
+
+return
+ }
+
+
+
+#*****************************************************************************
+#Fonction: fichier
+#Objectif: Afficher les informations du système de fichiers
+#Notes:
+#*****************************************************************************
+
+function fichier
+{
+   clear
+   df -Th
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+
+}
+
+
+#*****************************************************************************
+#Fonction: utilisation
+#Objectif: Affiche toutes les statistiques de l'utilisation disque
+#Notes:
+#*****************************************************************************
+
+function utilisation
+{
+   clear
+   du -h -k  /etc | less
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return
+
+}
+
+#*****************************************************************************
+#Fonction: disque
+#Objectif: Vider l'écran et afficher le sous-menu Disque
+#Notes:
+#*****************************************************************************
+
+function disque
+{
+
+while :
+do
+
+   clear
+   echo -e "Choisissez une des options suivantes \n"
+   echo -e "1 - Affiche les statistiques de l'utilisation du disque. \n"
+   echo -e "2 - Affiche les informations du système de fichiers. \n"
+   echo -e "3 - Revenir au menu principal \n"
+
+   read choixSysteme
+
+   case $choixSysteme in
+        1) utilisation;;
+        2) fichier;;
+        3) break;;
+	*) echo -e "Vous devez choisir entre les options 1,2,3"
+	   sleep 2;;
+
+   esac
+
+done
+
+return
+
+}
+
+#*****************************************************************************
+#Fonction: creerFichierTexte
+#Objectif: Créer un fichier .txt à la racine et vérifier son emplacement.
+#Notes: Utilisation des commandes echo read touch et find
+#*****************************************************************************
+
+function creerFichierTexte
+{
+   echo -e "Quel est le nom du fichier texte que vous voulez créer?"
+   read nom
+   texte=".txt"
+   touch /root/$nom$texte
+   phrase="Le  fichier $nom$texte est à la position $(find -name $nom$texte)"
+   echo -e $phrase
+
+   echo -e "Pressez une touche et entrée pour quitter"
+   read touche
+   return  
+
+}
+
+
+#*****************************************************************************
+#
+#Objectif: Programme principal
+#
+#*****************************************************************************
+
+while :
+do
+   clear
+   echo -e "Menu principal \n"
+   echo -e "Choisissez une des options suivantes: \n"
+   
+   echo -e "1 - Sous-menu système \n"
+   echo -e "2 - Sous-menu réseau \n"
+   echo -e "3 - Sous-menu disque \n"
+   echo -e "4 - Créer fichier texte \n"
+   echo -e "5 - Quitter l'application \n"
+
+   echo -e "Votre choix \n"
+   read choix
+
+   case $choix in
+
+	1) 
+	   systeme
+	   ;;
+	2)
+	   reseau
+	   ;;
+	3)
+	   disque
+	   ;;
+	4)
+	   creerFichierTexte
+	   ;;
+	5) 
+	   sortie
+	   ;;
+	6)
+	   echo -e "Vous devez choisir entre les options 1,2,3,4,5"
+	   sleep 2;;
+   esac
+
+done

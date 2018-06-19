@@ -1,0 +1,10 @@
+@  IN  SOA localhost. dnsmaster.evilcorpca.com. (
+	1 ; serial
+	8H ; refresh
+	2H ; retry
+	1W ; expire
+	1D ; minimum
+)
+;
+
+   IN  MX 10 courriel.evilcorpca.com.

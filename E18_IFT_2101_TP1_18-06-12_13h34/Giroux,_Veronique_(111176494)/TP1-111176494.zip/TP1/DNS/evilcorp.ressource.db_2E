@@ -1,0 +1,21 @@
+@	in	soa dns.evilcorp.ca. DNSMaster.evilcorpca.com. (
+	1	;serial (version)
+	3H	;refresh period
+	15M	;retry refresh this often
+	1W	;expiration period
+	1D )	;minimum TTL
+	
+
+;
+	IN	TXT	"DNS EvilCorp:
+	IN	NS	ns1.evilcorpca.com	;Primaire
+	IN	NS	ns2.evilcorpca.com	;Secondaire
+	IN	TXT	"Courriel"
+	IN	MX	courriel.evilcorpca.com	
+	IN	A	127.0.0.1		;Localhost
+	IN	A	10.10.1.1		;Passerelle interne
+	IN	A	199.48.22.28		;DNS Principal
+	IN	A	199.48.22.98		;DNS Secondaire
+	IN	A	10.10.1.89		;FTP
+	IN	A	192.168.100.0		;DMZ
+

@@ -1,0 +1,12 @@
+@                               IN      SOA     ns1.evilcorpca.com.     DNSMaster.evilcorpca.com.       (
+                                                30000
+                                                8H
+                                                2H
+                                                1W
+                                                2D )
+;
+				IN	NS	ns1
+				IN	NS	ns2
+100				IN	PTR	secure.evilcorpca.com.
+36				IN	PTR	courriel.evilcorpca.com.
+0				IN	PTR	ns1

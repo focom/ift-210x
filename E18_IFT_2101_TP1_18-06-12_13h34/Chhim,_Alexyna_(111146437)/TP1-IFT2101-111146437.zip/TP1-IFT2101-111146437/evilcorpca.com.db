@@ -1,0 +1,17 @@
+@ IN SOA evilcorpca.com. admin.evilcorpca.com. (
+	2001101804	; serial
+	8H		; refresh
+	2H		; retry
+	1W		; expire
+	1D )		; minimum
+;
+
+www.evilcorp.ca.	IN	CNAME	www.evilcorpca.com.
+www			IN	A	199.48.22.99
+ns1			IN	NS	199.48.22.28
+ns2			IN	NS	199.48.22.98
+vpn			IN	A	199.48.22.77
+evilcorpca.com		IN 	MX  	courriel.evilcorpca.com
+evilcorp.ca		IN	MX	courriel.evilcorpca.com
+courriel		IN	A	199.48.22.55
+webmail			IN	A	199.48.22.36

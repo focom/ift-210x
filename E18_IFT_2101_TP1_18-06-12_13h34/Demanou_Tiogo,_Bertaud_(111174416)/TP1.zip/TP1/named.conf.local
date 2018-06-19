@@ -1,0 +1,49 @@
+zone "evilcorpca.com" {
+    type master;
+    file "/var/named/data/db.evilcorpca.com";
+};
+
+zone "22.48.199.in-addr.arpa" {
+    type master;
+    file "/var/named/data/db.22.48.199";
+};
+zone "evilcorpca.ca" {
+    type forward;
+    forwarders { 199.48.22.28; 199.48.22.98; };
+};
+zone "evilcorpca.local" {
+    type master;
+    file "/var/named/data/db.evilcorpca.local";
+};
+zone "1.10.10.in-addr.arpa" {
+    type master;
+    file "/var/named/data/db.1.10.10";
+};
+zone "DMZ" {
+    type master;
+    file "/var/named/data/db.dmz";
+};
+zone "100.168.192.in-addr.arpa" {
+    type master;
+    file "/var/named/data/db.100.168.192";
+};
+zone "evilcorpca.com" {
+    type slave;
+    file "/var/named/data/slaves/db.evilcorpca.com";
+    masters { 199.48.22.28; };  # ns1 
+};
+zone "22.48.199.in-addr.arpa" {
+    type slave;
+    file "/var/named/data/slaves/db.22.48.199";
+    masters { 199.48.22.28; };  # ns1 
+};
+zone "evilcorpca.local" {
+    type slave;
+    file "/var/named/data/slaves/db.evilcorpca.local";
+    masters { 10.10.1.2; };  # ns1 
+};
+zone "1.10.10.in-addr.arpa" {
+    type slave;
+    file "/var/named/data/slaves/db.1.10.10.";
+    masters { 10.10.1.2; };  # ns1 
+};

@@ -1,0 +1,9 @@
+$TTL		86400
+@			IN	SOA		ns1.evilcorpca.com.	DNSmaster.evilcorpca.com. (
+						2018050901			; serial, date + #seq
+						8H					; refresh
+						2H					; retry
+						1W					; expire
+						1D)					; minimum
+;
+100			IN	PTR		secure.evilcorpca.com.

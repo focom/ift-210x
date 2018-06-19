@@ -1,0 +1,33 @@
+; evilcorpca.com
+$TTL 3600
+@   IN  SOA     ns1.evilcorpca.local. thomas.drolet.2.ulaval.ca. (
+        2018053105  ; Serial
+        8H          ; refresh after 8 hours
+        2H          ; retry after 2 hours
+        1W          ; expire after 1 week
+        1D)         ; minimum TTL of 1 day
+; 
+
+; Tag TXT pour plus d'infos
+@                       IN      TXT     "Cours IFT-2101 - evilcorpca.com."
+
+; Serveurs DNS - NS Records
+@                       IN	NS	ns1.evilcorpca.com.
+@                       IN	NS	ns2.evilcorpca.com.
+
+; Serveur courriel - Mx Records
+@                       IN      MX     10 courriel
+
+; Name Servers - A records
+localhost               IN      A       127.0.0.1       
+ns1                     IN      A       199.48.22.28
+ns2                     IN      A       199.48.22.98
+
+; Mail server - A record
+courriel                IN      A       199.48.22.36
+webmail                 IN      A       199.48.22.36
+
+; web server - A record
+www                     IN      A       199.48.22.99
+
+;

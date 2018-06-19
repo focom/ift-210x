@@ -1,0 +1,12 @@
+@ in soa localhost. root (
+         3      ;serial
+         3H     ;refresh
+         15M    ;retry refresh
+         1W     ;expiration period
+         1D     ;minimum TTL
+         )
+        IN      NS      ns1
+        IN      NS      ns2
+ns1     IN      A       199.48.22.28
+ns2     IN      A       199.48.22.98
+www     IN      A       199.48.22.99

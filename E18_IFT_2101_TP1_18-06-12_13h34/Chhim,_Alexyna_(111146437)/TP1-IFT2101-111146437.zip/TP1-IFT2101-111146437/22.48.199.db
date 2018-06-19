@@ -1,0 +1,17 @@
+@ IN SOA evilcorpca.com. admin.evilcorpca.com. (
+	2001101805	; serial
+	8H		; refresh
+	2H		; retry
+	1W		; expire
+	1D )		; minimum
+;
+
+99	IN	PTR	www
+28	IN	PTR	ns1		
+98	IN	PTR	ns2
+77	IN 	PTR	vpn
+55	IN	PTR	courriel
+36	IN	PTR	webmail
+
+
+

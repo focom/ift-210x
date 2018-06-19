@@ -1,0 +1,13 @@
+@	IN	SOA	ns1.evilcorpca.com.	dnsmaster.evilcorpca.com. (
+			2018052701		; serial, date + # sequentiel
+			8H			; refresh, 8 heures
+			30M			; retry, 30 minutes
+			1W			; expire, 1 semaine	
+			1D			; minimum, 1 jour			
+);
+
+	IN	NS	ns1.evilcorpca.com.
+	IN	NS	ns2.evilcorpca.com.
+
+1	IN	PTR	passerelle.evilcorpca.local
+89	IN	PTR	fichiers.evilcorpca.local

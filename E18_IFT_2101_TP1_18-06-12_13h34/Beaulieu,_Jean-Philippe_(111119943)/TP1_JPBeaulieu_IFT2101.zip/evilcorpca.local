@@ -1,0 +1,14 @@
+; Résolution inverse ZONE DOMAINE LOCAL(sous-réseau privé 10.10.1.0/24)
+;
+@       IN      	SOA     ns1.evilcorpca.local. DNSMaster.evilcorpca.local. (
+							2018060201       ; serial#, date 2 juin 2018
+							3H      ; Refresh period
+							1H      ; Retry refresh
+							1W      ; Expire period
+							1D )    ; Minimum TTL
+;
+							 IN      NS      ns1.evilcorpca.com.
+		 					 IN      NS      ns2.evilcorpca.com.
+;
+fichier	             	 	 IN	     A       10.10.1.89         ; Serveur fichier interne
+passerelle	             	 IN	     A       10.10.1.1          ; Passerelle interne

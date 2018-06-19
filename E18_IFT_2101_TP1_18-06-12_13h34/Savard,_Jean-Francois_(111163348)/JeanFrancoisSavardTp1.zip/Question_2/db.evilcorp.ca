@@ -1,0 +1,21 @@
+$TTL	1D
+@	IN	SOA	ns1.evilcorpca.com. admin.evilcorpca.com. (
+			2018060301		; serial, date + # sequence
+			8H			; refresh, 8 heures
+			2H			; retry, 2 heures
+			1W			; expire, 1 semaine
+			1D )			; minimum, 1 jour
+; name servers - NS records
+	IN	NS	ns1.evilcorpca.com.	 	;
+	IN	NS	ns2.evilcorpca.com.	  	;
+; mail servers - MX records
+	IN	MX	10 courriel.evilcorpca.com.	;
+; name servers - A records
+ns1.evilcorpca.com.	IN	A	199.48.22.28
+ns2.evilcorpca.com.	IN	A	199.48.22.98
+; 199.48.22.0 /24 - A records
+www	IN	A	199.48.22.99
+;
+       	IN DNAME	@
+
+

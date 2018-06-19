@@ -1,0 +1,14 @@
+; Résolution inverse ZONE DOMAINE (DMZ 192.168.100.0/24) : 100.168.192.in-addr.arpa
+; 192.168.100.x
+;
+@       IN      	SOA     ns1.evilcorpca.com. DNSMaster.evilcorpca.com. (
+							2018060201       ; serial#, date 2 juin 2018
+							3H      ; Refresh period
+							1H      ; Retry refresh
+							1W      ; Expire period
+							1D )    ; Minimum TTL
+;
+							 IN      NS      ns1.evilcorpca.com.
+		 					 IN      NS      ns2.evilcorpca.com.
+;
+100      IN 	 		PTR 	secure.evilcorpca.com.    ; Pointeur sur 192.168.100.100 (Passerelle de paiement)

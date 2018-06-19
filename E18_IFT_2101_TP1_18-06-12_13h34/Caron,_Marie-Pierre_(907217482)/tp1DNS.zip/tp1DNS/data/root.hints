@@ -1,0 +1,25 @@
+@ IN SOA  localhost. dnsadmin.evilcorpca.com. ( 
+         1      ;serial (version) 
+         3H     ;refresh period 
+         15M    ;retry refresh this often 
+         1W     ;expiration period 
+         1D     ;minimum TTL 
+         )
+	
+@	IN NS ns1.evilcorpca.com.
+@	IN NS ns2.evilcorpca.com.	
+
+515653	IN	NS	m.root-servers.net.
+515653	IN	NS	b.root-servers.net.
+515653	IN	NS	c.root-servers.net.
+515653	IN	NS	d.root-servers.net.
+515653	IN	NS	e.root-servers.net.
+515653	IN	NS	f.root-servers.net.
+515653	IN	NS	g.root-servers.net.
+515653	IN	NS	h.root-servers.net.
+515653	IN	NS	i.root-servers.net.
+515653	IN	NS	a.root-servers.net.
+515653	IN	NS	j.root-servers.net.
+515653	IN	NS	k.root-servers.net.
+515653	IN	NS	l.root-servers.net.
+

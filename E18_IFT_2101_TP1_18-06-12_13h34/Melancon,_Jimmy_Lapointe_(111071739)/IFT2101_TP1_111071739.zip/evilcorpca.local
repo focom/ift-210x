@@ -1,0 +1,16 @@
+$TTL    3H
+@ IN SOA     ns1.evilcorpca.local. adminserver.evilcorpca.com. (
+                           201806051  	; serial
+                           8H       	; refresh
+                           2H       	; retry
+                           1W      		; expire
+                           1D )     	; minimum
+; Serveur de noms - NS
+@		IN	NS	ns1.evilcorpca.local.	
+; Serveur de noms - A
+ns1		IN	A	10.10.1.1
+; Adressage - A
+fichiers	IN	A	10.10.1.89
+ftp		IN	A	10.10.1.50 ; serveur ftp
+; Alias de noms - CNAME
+partage		IN	CNAME	ftp

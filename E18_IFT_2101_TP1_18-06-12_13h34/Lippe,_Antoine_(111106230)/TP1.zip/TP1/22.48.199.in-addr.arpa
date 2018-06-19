@@ -1,0 +1,17 @@
+@		IN	SOA	ns1.evilcorpca.com. admin.evilcorpca.com. (
+					5		;serial
+					604800		; Refresh
+					86400		; Retry
+					2419200		; Expire
+					604800 )	; Negative Cache TTL
+
+		IN	NS	ns1
+		IN	NS	ns2
+99		IN	PTR	evilcorpca.com.
+100		IN	PTR	secure.evilcorpca.com.
+36		IN	PTR	courriel.evilcorpca.com.
+36		IN	PTR	webmail.evilcorpca.com.
+77		IN	PTR	vpn.evilcorpca.com.
+28		IN	PTR	ns1.evilcorpca.com.	
+98		IN	PTR	ns2.evilcorpca.com.
+	

@@ -1,0 +1,441 @@
+#*************************************************
+#Fichier : monapp
+#Projet : TP1
+#Auteur : Veronique Giroux
+#Cours : IFT-2101
+#*************************************************
+
+#*************************************************
+#Fonction :serviceCrond
+#Objectif :Afficher les fichiers ouvert par le service crond
+#Notes :
+#*************************************************
+
+function serviceCrond
+
+{ 
+	clear
+	while :
+	do
+		echo -e "Appuyer une touche pour afficher fichiers ouverts \nAppuyer q pour revenir au menu systeme : \c"
+		read choix
+		if [ $choix = q ] || [ $choix = "Q" ]	
+		then
+			menuSysteme
+		else
+			lsof | grep crond
+		fi
+	done
+}
+
+**********************************************
+#Fonction : menuSysteme
+#Objectif : Afficher le sous-menu Système
+#Notes : 
+#**********************************************
+
+function menuSysteme
+
+{
+	while :	
+	do
+		clear
+		echo -e "Sous-Menu Systeme"
+		echo -e "Faite votre choix"
+		echo -e "1 = Affiche processus en exécution"
+		echo -e "2 = Affiche fichiers ouvert par crond"
+		echo -e "3 = Retour Menu Principal"
+		echo -e "Entrer votre choix : \c "
+		read choix2
+	
+		case $choix2 in
+			1) top -H ;;
+			2) serviceCrond ;;
+			3) menuPrincipal ;;
+		esac
+	done
+}
+
+#***********************************************
+#Fonction : socketListening
+#Objectif : Afficher les sockets en écoute
+#Notes :
+#***********************************************
+
+function socketListening
+
+{
+	clear	
+	while :
+	do
+		echo -e "Appuyer une touche pour afficher les sockets ouvert \nAppuyer q pour revenir au menu reseau : \c "
+		read choix
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuReseau
+		else
+			netstat -l
+		fi
+	done
+}
+
+#******************************************************
+#Fonction : socketOuverts
+#Objectif : Demande adresse IP et affiche ports ouverts
+#Notes : 
+#******************************************************
+
+function socketOuverts
+{
+	clear
+	while :
+	do
+		echo -e "Appuyer une touche pour continuer \nAppuyer q pour quitter : \c"
+		read choix
+	
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuReseau
+		else
+			echo -e "Entrer une adresse IP : \c "
+			read host
+			port_debut=1
+			port_fin=65535
+			for ((port=$port_debut; port<=$port_fin; port++))
+			do
+				(echo >/dev/tcp/$host/$port) >/dev/null 2>&1 && echo "$port ouvert"
+			done
+		fi	
+	done
+}	
+
+#********************************************************************
+#Fonction : pageDistante
+#Objectif : Demande adresse IP et affiche le contenu de la  page HTML
+#Notes :
+#********************************************************************
+
+function pageDistante
+{
+	while :
+	do
+
+		echo -e "Entrer une adresse IP : \c "
+		read adressePage
+		
+		exec 3<>/dev/tcp/$adressePage/80
+		echo -e "GET / $adressePage: close\r\n\r\n" >&3
+		cat <&3
+		menuReseau
+	done
+}
+
+#*********************************************
+#Fonction : serveurNoms
+#Objectif : Demande nom de domaine et affiche serveur
+#DNS autoritaire 
+#Notes : 
+#*********************************************
+
+function serveurNoms
+{
+	while :
+	do
+
+		echo -e "Appuyer une touche pour afficher \nAppuyer q pour quitter : \c "
+		read choix
+
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuReseau
+		else
+			echo -e "Entrer un nom de domaine : \c "
+			read nomDomaine
+			dig $nomDomaine ns
+		fi
+	done
+}
+
+#***************************************************
+#Fonction : serveurCourriel
+#Objectif : Demande nom de domaine et affiche serveur 
+#qui recoit les courriels pour ce domaine
+#Notes :
+#*****************************************************
+
+function serveurCourriel
+{
+	clear
+	while :
+	do
+		echo -e "Appuyer une touche pour continuer \nAppuyer q pour quitter : \c "
+		read choix
+
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuReseau		
+		else
+			echo -e "Entrer un nom de domaine : \c"
+			read nomDomaine2
+			dig $nomDomaine2 MX
+		fi
+	done
+}
+
+#**********************************************
+#Fonction : menuReseau
+#Objectif : Afficher le sous-menu Reseau
+#Notes : 
+#***********************************************
+
+function menuReseau
+{
+	while :
+	do
+		clear
+		echo -e "Sous-Menu Reseau"
+		echo -e "Faite votre choix"
+		echo -e "1 = Lister les ports ouverts"
+		echo -e "2 = Socket ouvert selon adresse IP"
+		echo -e "3 = Page distante selon adresse IP"
+		echo -e "4 = Serveur local selon nom de domaine"
+		echo -e "5 = Serveur courriel selon nom de domaine"
+		echo -e "6 = Retour Menu Principal"
+		echo -e "Entrer votre choix : \c "
+		read choixreseau
+	
+		case $choixreseau in
+			1) socketListening ;;
+			2) socketOuverts ;;
+			3) pageDistante ;;
+			4) serveurNoms ;;
+			5) serveurCourriel ;;
+			6) menuPrincipal ;;
+		esac
+	done
+}
+
+#****************************************************************
+#Fonction : systemeFichiers
+#Objectif : Afficher les informations du système de fichiers
+#Notes : Cette commande devrait envoyer le contenu de la commande
+# df -kh dans le fichier resultat, ensuite afficher le contenu de
+# ce fichier a l'écran. 
+#*****************************************************************
+
+function systemeFichiers
+{
+	while :
+	do
+		clear
+		echo -e "Appuyer une touche pour afficher les informations, Appuyer q pour quitter : \c "
+		read choix
+		
+		if [ $choix = "q" ] || [ $choix = "Q" ] 
+		then	
+			menuDisque
+		else
+			df -kh > /bin/resultat
+			cat /bin/resultat
+			sleep 10
+		fi
+	done
+}
+
+#*********************************************
+#Fonction : menuDisque
+#Objectif : Afficher le sous-menu Disque
+#Notes : 
+#*********************************************
+
+function menuDisque
+{
+	while :
+	do
+		clear
+		echo -e "Sous-Menu Disque"
+		echo -e "Faite votre choix"
+		echo -e "1 = Afficher statistiques d'utilisation"
+		echo -e "2 = Afficher informations systeme fichier"
+		echo -e "3 = Retour Menu Principal"
+		echo -e "Entrer votre choix : \c "
+		read choixdisque
+
+		case $choixdisque in
+			1) du -ah /etc | less ;;
+			2) systemeFichier ;;
+			3) menuPrincipal ;;
+		esac
+	done
+}
+
+#****************************************************************
+#Fonction : connexionReseau
+#Objectif : Afficher les détails de la connexion réseau
+#Notes: Envoyer le résultat de la commande
+# ifconfig dans le fichier resultat, ensuite afficher le contenu
+# de ce fichier à l'écran, ou de retourner au menu diagnostic. 
+#*****************************************************************
+
+function connexionReseau
+{
+	while :
+	do
+		clear
+		echo -e "Appuyer une touche pour affiche \nAppuyer q pour retourner au menu diagnostic : \c "
+		read choix
+	
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuDiagnostic
+		else
+			ifconfig -a > /bin/resultat
+			cat /bin/resultat
+			sleep 10
+		fi
+	done
+}			
+
+#***********************************************
+#Fonction : tableArp
+#Objectif : Afficher l'état de la carte réseau
+#Notes :
+#************************************************
+
+function tableArp
+{
+	while :
+	do
+		clear
+		echo -e "Appuyer une touche pour afficher \nAppuyer n'importe quelle touche pour retourner au menu diagnostic : \c "
+		read choix
+
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuDiagnostic
+		else
+			arp -a > /bin/resultat 
+			cat /bin/resultat
+			sleep 10
+		fi
+	done
+}
+
+#*********************************************
+#Fonction : route
+#Objectif : Tester la connectivité entre deux noeuds
+#Notes :
+#*********************************************
+
+function route
+{
+	clear
+	while :
+	do
+
+		echo -e "Appuyer une touche pour tester la connectivité \nAppuyer q pour revenir au menu diagnostice : \c "
+		read choix
+		echo -e "Entrer une adresse IP : \c "
+		read adresse
+
+		
+		if [ $choix = "q" ] || [ $choix = "Q" ]
+		then
+			menuDiagnostic
+		else	
+			traceroute $adresse
+			menuDiagnostic
+		fi
+	done
+}		
+	
+#*********************************************
+#Fonction : menuDiagnostic
+#Objectif : Obtenir des statistiques réseau
+#Notes : 
+#*********************************************
+
+function menuDiagnostic
+{
+	while :
+	do
+		clear
+		echo -e "Sous-Menu Diagnostic"
+		echo -e "Faite votre choix"
+		echo -e "1 = Afficher details connexion reseau"
+		echo -e "2 = Afficher table ARP"
+		echo -e "3 = Tester la connectivité d'une adresse IP " 
+		echo -e "4 = Retour Menu Principal"
+		echo -e "Entrer votre choix : \c "
+		read choixdiagnostic
+
+		case $choixdiagnostic in
+			1) connexionReseau ;;
+			2) tableArp ;;
+			3) route ;;
+			4) menuPrincipal ;;
+		esac
+	done
+}
+
+#*********************************************
+#Fonction : menuQuitter
+#Objectif : Terminer le programme
+#Notes : 
+#***********************************************
+
+function menuQuitter
+
+{
+	clear
+	echo "Merci d'avoir utiliser mon app, au revoir!"
+	sleep 2
+	clear
+	exit
+}
+
+#***********************************************
+#Fonction : menuPrincipal
+#Objectif : Boucle du menu principal
+#Notes :
+#**********************************************
+
+function menuPrincipal
+
+{
+	while :
+	do 
+		clear
+		echo -e "MENU PRINCIPAL \n"
+		echo -e "Faire votre choix"
+		echo -e "\t Option \t Description \n"
+		echo -e "\t 1 \t\t Systeme"
+		echo -e "\t 2 \t\t Reseau"
+		echo -e "\t 3 \t\t Disque"
+		echo -e "\t 4 \t\t Diagnostic"
+		echo -e "\t 5 \t\t Quitter"
+		echo -e "Entrer votre choix : \c "
+		read choix
+
+		case $choix in
+			1) menuSysteme ;;
+			2) menuReseau ;;
+			3) menuDisque ;;
+			4) menuDiagnostic ;;
+			5) menuQuitter ;;
+		esac
+
+	done
+}
+
+
+#*********************************************
+#Fonction :
+#Objectif : Afficher menu prinicpal
+#Notes : 
+#**********************************************
+
+while :
+do
+	menuPrincipal 
+done

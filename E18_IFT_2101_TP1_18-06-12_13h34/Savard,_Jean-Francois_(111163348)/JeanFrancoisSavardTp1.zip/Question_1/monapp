@@ -1,0 +1,242 @@
+#!/bin/bash
+
+#*****************************************************************************
+#  Fichier      : monapp
+#  Projet       : Travail pratique 1
+#  Auteur       : Jean-Francois Savard
+#  Groupe       : IFT-2101
+#  Cours        : Protocole et technologie internet
+#  École        : Université Laval
+#  Session      : Été 2018
+#  Notes        :
+#*****************************************************************************
+
+# Cette fonction affiche un message d'au-revoir diabolique. Par la suite,
+# elle attend 2 seconde avant de vider la console et de quitter.
+function quitter {
+  echo "Ce n'est qu'un au revoir... Mwuahahahaha (rire diabolique)"
+  sleep 2s
+  clear
+  exit
+}
+
+# Cette fonction bloque le programme tant que l'utilisateur n'appuie pas
+# sur une touche.
+function continuer {
+  read -n 1 -s -r -p "Appuyez sur une touche pour continuer"
+}
+
+# Cette fonction fait l'affichage du sous-menu système et attend le choix
+# de l'utilisateur pour ensuite déléguer à la méthode choix_systeme.
+function systeme {
+  clear
+  if [ -z $1 ]; then
+    echo -e "Sous-menu système\n"
+    echo "1) top"
+    echo "2) crond"
+    echo "3) Revenir au menu principal"
+    read choix
+    choix_systeme $choix;
+  else
+    choix_systeme $1;
+  fi
+}
+
+# Cette fonction exécute la bonne commande pour le sous-menu système
+# selon le choix reçu.
+function choix_systeme {
+  clear
+  case $1 in
+    1) top -H ;;
+    2) lsof -c crond | more ;;
+  esac
+}
+
+# Cette fonction fait l'affichage du sous-menu réseau et attend le choix
+# de l'utilisteur pour ensuite déléguer à la méthode choix_reseau.
+function reseau {
+  clear
+  if [ -z $1 ]; then
+    echo -e "Sous-menu réseau\n"
+    echo "1) Socket en écoute localement"
+    echo "2) Socket ouverts (distant)"
+    echo "3) Page distante"
+    echo "4) Serveur de noms"
+    echo "5) Serveur courriel"
+    echo "6) Revenir au menu principal"
+    echo -e "Votre choix: \c"
+    read choix
+    choix_reseau $choix;
+  else
+    choix_reseau $1;
+  fi
+}
+
+# Cette fonction prend action pour le sous-menu réseau selon le choix reçu.
+function choix_reseau {
+  clear
+  case $1 in
+    1) netstat -a | grep LISTENING | more ;;
+    2) socket_ouvert ;;
+    3) page_distante ;;
+    4) serveur_noms ;;
+    5) serveur_courriel ;;
+  esac
+}
+
+# Cette fonction demande à l'utilisateur une adresse IP pour laquelle elle
+# affiche les ports ouverts sur le serveur.
+function socket_ouvert {
+  echo -e "Entrez l'adresse IP pour laquelle vous voulez afficher les ports ouvert : \c"
+  read adresseIp
+  clear
+  netstat -lnt | awk 'NR>2{print $4}' | grep -E $adresseIp | sed 's/.*://'
+  continuer
+}
+
+# Cette fonction demande à l'utilisateur une adresse IP pour laquelle
+# elle tentera d'exécuter une requête HTTP GET et d'afficher le HTML résultant.
+function page_distante {
+  echo -e "Entrez l'adresse IP pour laquelle vous voulez récupérer le contenu HTML : \c"
+  read adresseIp
+  clear
+  curl -XGET $adresseIp
+  continuer
+}
+
+# Cette fonction demande à l'utilisateur un nom de domaine pour lequel
+# elle affichera le serveur DNS.
+function serveur_noms {
+  echo -e "Entrez le nom de domaine pour lequel vous voulez connaître le serveur DNS : \c"
+  read nomDomaine
+  serveurDns=$(nslookup $nomDomaine | grep Server | awk '{print $2}')
+  clear
+  echo "Le serveur dns est $serveurDns"
+  continuer
+}
+
+# Cette fonction demande à l'utilisateur le nom de domaine pour lequel elle
+# affichera le serveur d'échange de courriel.
+function serveur_courriel {
+  echo -e "Entrez le nom de domaine pour lequel vous voulez connaître le serveur de courriel pour la préférence 10 : \c"
+  read nomDomaine
+  serveurCourriel=$(dig $nomDomaine MX +short | grep 10 | awk '{print $2}')
+  clear
+  echo "Le serveur de courriel pour la préférence 10 est : $serveurCourriel"
+  continuer
+}
+
+# Cette fonction affiche le sous-menu disque et attend le choix de l'utilisateur
+# pour ensuite déléguer à la méthode choix_disque.
+function disque {
+  clear
+  if [ -z $1 ]; then
+    echo -e "Sous-menu disque\n"
+    echo "1) Utilisation"
+    echo "2) Fichiers"
+    echo "3) Revenir au menu principal"
+    echo -e "Votre choix: \c"
+    read choix
+    choix_disque $choix;
+  else
+    choix_disque $1;
+  fi
+}
+
+# Cette fonction prend action sur le choix reçu pour le sous-menu disque.
+function choix_disque {
+  clear
+  case $1 in
+    1) du -akh /etc | more ;;
+    2) fichiers ;;
+  esac
+}
+
+# Cette fonction affiche les informations du système de fichier en 6 colonnes
+# par bloc de 1024 octets de manière lisible pour les humains.
+function fichiers {
+  df -kh
+  continuer
+}
+
+# Cette fonction affiche le sous-menu mémoire et attend le choix de
+# l'utilisateur pour ensuite déléguer à la méthode choix_memoire.
+function memoire {
+  clear
+  if [ -z $1 ]; then
+    echo -e "Sous-menu mémoire\n"
+    echo "1) Utilisation"
+    echo "2) Information"
+    echo "3) Revenir au menu principal"
+    read choix
+    choix_memoire $choix
+  else
+    choix_memoire $1
+  fi
+}
+
+# Cette fonction prend action sur le choix reçu.
+function choix_memoire {
+  clear
+  case $1 in
+    1) utilisation_memoire ;;
+    2) cat /proc/meminfo | more;;
+  esac
+}
+
+# Cette méthode affiche l'utilisation de la mémoire sur le serveur de
+# manière lisible pour l'être humain.
+function utilisation_memoire {
+  free -h
+  continuer
+}
+
+# Cette fonction affiche un sous_menu ou exécute directement une option d'un
+# sous-menu selon le nombre d'arguments reçu.
+function sous_menu {
+  if [ -n $2 ]; then
+    case $1 in
+      1) systeme $2 ;;
+      2) reseau $2 ;;
+      3) disque $2 ;;
+      4) memoire $2 ;;
+      5) quitter ;;
+    esac;
+  else
+    case $1 in
+      1) systeme ;;
+      2) reseau ;;
+      3) disque ;;
+      4) memoire ;;
+      5) quitter ;;
+    esac;
+  fi
+}
+
+# Ce bloc permet d'exécuter directement une option d'un sous-menu selon
+# les arguments reçu avant d'afficher le menu principal.
+if [ -n $1 ]; then 
+  if [ -n $2 ]; then
+    sous_menu $1 $2;
+  else
+    sous_menu $1;
+  fi
+fi
+
+# Boucle principal. Affiche le menu principal. Attend le choix de l'utilisateur
+# pour ensuite déléguer à la méthode sous_menu qui prendra action selon
+# le choix.
+while :
+do
+  clear
+  echo -e "Menu principal\n"
+  echo "1. Système"
+  echo "2. Réseau"
+  echo "3. Disque"
+  echo "4. Mémoire"
+  echo "5. Quitter"
+  echo -e "Votre choix: \c"
+  read choix
+
+  sous_menu $choix
+done

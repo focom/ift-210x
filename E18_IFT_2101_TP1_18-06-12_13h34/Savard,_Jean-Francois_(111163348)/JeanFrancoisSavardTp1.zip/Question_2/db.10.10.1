@@ -1,0 +1,13 @@
+$TTL 1D
+@	IN	SOA	ns1.evilcorpca.com.	admin.evilcorpca.com. (
+				2018060301	; serial
+				8H		; refresh
+				2H		; retry
+				1W		; expire
+				1D )		; ttl
+; name servers
+	IN	NS	ns1.evilcorpca.com.	;
+	IN	NS	ns2.evilcorpca.com.	;
+; ptr records
+1	IN	PTR	passerelle.evilcorpca.local.	; 10.10.1.1
+89	IN	PTR	fichiers.evilcorpca.local.	; 10.10.1.89

@@ -1,0 +1,12 @@
+@		IN	SOA	ns1.evilcorpca.com. admin.evilcorpca.com. (
+					6		;serial
+					604800		; Refresh
+					86400		; Retry
+					2419200		; Expire
+					604800 )	; Negative Cache TTL
+
+		IN	NS	ns1
+		IN	NS	ns2
+1		IN	PTR	passerelle.evilcorpca.local.
+89		IN	PTR	fichiers.evilcorpca.local.
+

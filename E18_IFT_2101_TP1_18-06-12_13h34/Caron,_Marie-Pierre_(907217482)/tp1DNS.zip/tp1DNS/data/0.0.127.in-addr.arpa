@@ -1,0 +1,11 @@
+@ IN SOA  localhost. dnsadmin.evilcorpca.com. ( 
+         1      ;serial (version) 
+         3H     ;refresh period 
+         15M    ;retry refresh this often 
+         1W     ;expiration period 
+         1D     ;minimum TTL 
+         )
+	
+@	IN NS ns1.evilcorpca.com.
+@	IN NS ns2.evilcorpca.com.
+@	IN PTR localhost.	

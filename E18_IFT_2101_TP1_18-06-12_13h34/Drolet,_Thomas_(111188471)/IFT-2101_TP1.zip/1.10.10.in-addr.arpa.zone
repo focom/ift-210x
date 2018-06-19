@@ -1,0 +1,17 @@
+; Reverse ip private
+$TTL 3600
+@   IN  SOA     ns1.evilcorpca.com. thomas.drolet.2.ulaval.ca. (
+        2018053104  ; Serial
+        8H          ; refresh after 8 hours
+        2H          ; retry after 2 hours
+        1W          ; expire after 1 week
+        1D)         ; minimum TTL of 1 day
+; 
+; Serveur DNS - NS record
+            IN  NS  ns1.evilcorpca.com.
+            IN  NS  ns2.evilcorpca.com.
+
+; Machines - PTR records
+1           IN  PTR passerelle.evilcorpca.local.
+89          IN  PTR fichiers.evilcorpca.local.
+

@@ -1,0 +1,16 @@
+@ IN SOA  ns1.evilcorpca.com. dnsadmin.evilcorpca.com. (
+         1    ;serial (version)
+         3H     ;refresh period
+         15M    ;retry refresh this often
+         1W     ;expiration period
+         1D     ;minimum TTL
+         )
+
+@    IN NS ns1.evilcorpca.com.
+
+@    IN NS ns2.evilcorpca.com.
+
+www.evilcorp.ca. IN CNAME www.evilcorpca.com.
+
+evilcorp.ca. IN MX 20 courriel.evilcorpca.com.
+ 

@@ -1,0 +1,217 @@
+#***********************************
+#Fonction : disque
+#Objectif : Presente le Menu disque
+#
+#***********************************
+function disque ()
+{
+clear
+
+	echo -e "Choix $1 pour le menu disque  \n"
+	echo -e "\t 1 \t\t  UTILISATION \n"
+	echo -e "\t 2 \t\t  FICHIER \n"
+	echo -e "\t 3 \t\t  SORTIE \n"
+	
+        echo -e "veuillez tapper votre réponse"
+if [ -z "$1" ]; then
+        echo -e "veuillez tapper votre réponse"
+        read valeur
+        set "$valeur"
+        echo -e "$1"
+fi
+        case $1 in
+		1) du -ak /etc |more;;
+		2) df -ak ;sleep 10 ;;
+		3) page;;
+	esac
+}
+
+
+
+#***********************************
+# Fontion: reseau
+# Objetif: presente le menu reseau
+# Notes: a les different menu du reseau
+#***********************************
+function reseau ()
+{
+clear
+	echo -e "Choix pour le menu reseau  \n"
+	echo -e "\t 1 \t\t  SOCKET EN ECOUTE LOCALEMENT \n"
+	echo -e "\t 2 \t\t  SOCKET DISTANT \n"
+	echo -e "\t 3 \t\t  PAGE DISTANTE \n"
+	echo -e "\t 4 \t\t  SERVEUR DE NOM \n"
+	echo -e "\t 5 \t\t  SERVEUR DE NOM COURRIEL \n"
+	echo -e "\t 6 \t\t  SORTIE \n"
+
+if [ -z "$1" ]; then
+        echo -e "veuillez tapper votre réponse"
+        read valeur
+        set "$valeur"
+        echo -e "$1"
+fi
+        case $1 in
+		1) netstat -n --listening;;
+		2) ouvert;;
+		3) page;;
+		4) diggue;;
+		5) digguemx;;
+		6) sortie;;
+
+	esac
+
+
+}
+
+#***********************************
+# fonction diggueMx
+#  Objectif : recherche l'info sur le DNS 
+#  Note : seulement pour un enregistrement MX
+#***********************************
+function digguemx
+{
+clear
+  echo  "Quelle est l'adresse du serveur dns  pour le MX a verifier \n"
+  read testmx
+  dig $testmx mx
+ sleep 10
+
+}
+
+
+#***********************************
+#fonction: Diggue
+#Objectif: Cherche l'info sur le DNS
+#Notes:
+#***********************************
+function diggue
+{
+clear
+  echo  "Quelle est l'adresse du serveur dns a verifier \n"
+  read test
+  dig $test
+  sleep 10
+
+}
+
+#***********************************
+# Fonction : ouvert
+# Objectif: sous menu pour le socket ouvert
+# Notes:  permet de faire fonctionner la question pour la question du sur serveur
+#***********************************
+function ouvert
+{                                
+  clear
+  echo -e "\t  Quelle est l'adresse du serveur a verifier \n"
+  read valeurss
+  netstat -natp | grep $valeurss 	
+  sleep 10
+
+
+}
+
+#***********************************
+# Fonction: page
+# Objectif: demande la page distance
+# : demande l'adresse de la page distance et l'affice
+#***********************************
+function page
+{                                
+  clear
+  echo -e "\t  Quelle est l'adresse du serveur a verifier \n"
+  read valeursadd
+  curl $valeursadd
+  sleep 10
+}
+
+
+
+#***********************************
+# Fonction syste
+# Objectif:  presente le menu systeme
+# Notes:  a le menu top et crond
+#***********************************
+function syste ()
+{
+clear
+	echo -e "MENU SYSTEME \n"
+	echo -e "Choix pour le menu systeme  \n"
+	echo -e "\t 1 \t\t  TOP \n"
+	echo -e "\t 2 \t\t  CROND, Voir fichier Ouvert \n"
+	echo -e "\t 3 \t\t  SORTIE \n"
+
+if [ -z "$1" ]; then
+        echo -e "veuillez tapper votre réponse"
+        read valeur
+        set "$valeur"
+        echo -e "$1"
+fi	
+	case $1 in
+		1) top ;;
+		2) ps -aef |grep cron; sleep 5 ;;
+		3) sortie;;
+	esac
+
+}
+#***********************************
+# Fonction sortie
+# Objectif : sortir
+# Note : simplement sortir de toute les fonctions
+#***********************************
+function sortie
+{
+clear
+echo -e "Bonne journee"
+sleep 2
+exit
+
+}
+
+#***********************************
+#
+#
+#
+#***********************************
+function logging
+{
+clear
+echo -e " Quel mot doit être rechercher dans tout les log\n"
+echo -e "il sera sauvegarder dans /var/log/sauvegarde \n"
+
+read valeur
+
+
+grep $valeur /var/log/* > /var/log/sauvegarde
+
+cat /var/log/sauvegarde
+sleep 5
+}
+
+#***********************************
+#  Fonction : Main
+#  Objectif: menu principal
+#  Notes:  peut recevoir 2 parametres et les utiliser
+#***********************************
+	
+	clear
+	echo -e "MENU PRINCIPAL \n"
+	echo -e "Choix pour la question 1  \n"
+	echo -e "\t 1 \t\t  Systeme \n"
+	echo -e "\t 2 \t\t  Reseau \n"
+	echo -e "\t 3 \t\t  Disque \n"
+	echo -e "\t 4 \t\t  Vérifier un fichier log et le sauvegarder\n"
+	echo -e "\t 5 \t\t  Quitter \n"
+if [ -z "$1" ]; then
+	echo -e "veuillez tapper votre réponse"	
+	read valeur
+	set "$valeur"
+	echo -e "$1"
+fi
+
+	case $1 in
+		1) syste "$2"  ;;
+		2) reseau "$2"  ;;
+		3) disque $2  ;;
+		4) logging ;;
+		5) exit ;;
+	esac

@@ -1,0 +1,12 @@
+@                               IN      SOA     ns1.evilcorpca.com.     DNSMaster.evilcorpca.com.       (
+                                                30000
+                                                8H
+                                                2H
+                                                1W
+                                                2D )
+;
+                                IN      NS      ns1
+                                IN      NS      ns2
+89                              IN      PTR     fichiers.evilcorpca.local.
+1                               IN      PTR     passerelle.evilcorpca.local.
+0				IN	PTR	ns1

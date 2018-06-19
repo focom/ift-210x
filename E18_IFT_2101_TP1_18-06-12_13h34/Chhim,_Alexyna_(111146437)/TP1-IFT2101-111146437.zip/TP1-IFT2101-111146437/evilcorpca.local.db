@@ -1,0 +1,10 @@
+@ IN SOA evilcorpca.local.	admin.evilcorpca.local. (
+
+	2000101804	; serial
+	8H		; refresh
+	2H		; retry
+	1W		; expire
+	1D )		; minimum
+;
+fichiers	IN	A	10.10.1.89
+passerelle	IN	A	10.10.1.1

@@ -1,0 +1,22 @@
+@           IN  SOA ns1.evilcorpca.com. root.evilcorpca.com. (
+                2018090601              ;Serial
+                3600                    ;Refresh
+                1800                    ;Retry
+                604800                  ;Expire
+                86400                   ;Minimum TTL
+            )
+;
+Name Server Information
+            IN  NS  ns1.evilcorpca.com.     ;Address of primary Name Server
+            IN  NS  ns2.evilcorpca.com.     ;Address of secondary Name Server
+ns1         IN  A   199.48.22.28
+ns2         IN  A   199.48.22.98
+            IN  MX  courriel                ;Primary mail
+            IN  MX  courriel.evilcorp.ca. ;Secondary mail
+localhost   IN  A   127.0.0.1
+webmail     IN  A   199.48.22.36
+courriel    IN  A   199.48.22.36
+www         IN  A   199.48.22.99
+secure      IN  A   199.48.22.100
+vpn         IN  A   199.48.22.77
+

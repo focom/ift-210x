@@ -1,0 +1,17 @@
+@ in soa localhost. root (
+	201806071	;serial
+	3H		;refresh period
+	15M		;retry refresh this often
+	1W		;expiration period
+	1D		;minimum TTL
+	)
+
+28	IN	NS	ns1.evilcorpca.com
+98	IN	NS	ns2.evilcorpca.com
+55	IN	PTR	courriel.evilcorp
+77	IN	PTR	vpn.evilcorpca.com
+36	IN	PTR	https://webmail.evilcorpca.com
+36	IN	PTR	https://courriel.evilcorpca.com
+100	IN	PTR	http://secure.evilcorpca.com
+99	IN	PTR	http://www.evilcorpca.com
+

@@ -1,0 +1,24 @@
+$TTL 604800     ; 1 semaine
+
+@       IN      SOA     ns1.evilcorpca.com. admin.evilcorpca.com. (
+                              3         ; Serial
+             604800     ; Refresh
+              86400     ; Retry
+            2419200     ; Expire
+             604800 )   ; Negative Cache TTL
+;
+;  name servers - NS records
+ 	IN 	NS	ns1.evilcorpca.com.
+ 	IN 	NS 	ns2.evilcorpca.com.
+
+
+; name servers - PTR records
+
+28.22.48	IN	PTR	ns1.evilcorpca.com.	; 199.48.22.28		
+98.22.48	IN	PTR	ns2.evilcorpca.com.	; 199.48.22.98
+55.22.48	IN	PTR	courriel.evilcorpca.com.; 199.48.22.55
+77.22.48	IN	PTR	vp.evilcorpca.com.	; 199.48.22.77
+36.22.48	IN	PTR	webmail.evilcorpca.com.	; 199.48.22.36
+36.22.48	IN	PTR	courriel.evilcorpca.com.; 199.48.22.36
+100.22.48	IN	PTR	secure.evilcorpca.com.	; 199.48.22.100
+99.22.48	IN	PTR	www.evilcorpca.com.	; 199.48.22.99

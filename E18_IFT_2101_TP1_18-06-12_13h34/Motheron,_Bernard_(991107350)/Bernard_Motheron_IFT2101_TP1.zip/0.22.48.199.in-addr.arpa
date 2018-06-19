@@ -1,0 +1,17 @@
+$TTL 1D
+@		IN 	SOA	ns1.evilcorpca.com. DNSMaster.evilcorpca.com.(
+					0	; serial
+					1D	; refresh
+					1H	; retry
+					1W	; expire
+					3H )	; minimum
+; 
+
+28		IN	PTR	ns1.evilcorpca.com.
+36		IN	PTR	webmail.evilcorpca.com.
+55		IN	PTR	courriel.evilcorpca.com.
+77		IN	PTR	vpn.evilcorpca.com.
+98		IN	PTR	ns2.evilcorpca.com.
+99		IN	PTR	www.evilcorpca.com.
+100		IN	PTR	secure.evilcorpca.com.
+

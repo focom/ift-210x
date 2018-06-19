@@ -1,0 +1,23 @@
+zone "evilcorpca.com"
+{
+	type master;
+	file "/var/named/data/db.evilcorpca.com;
+};
+
+zone "1.10.10.in-addr.arpa"
+{
+	type master;
+	file "/var/named/data/db.1.10.10";	# Sous-reseau prive 10.10.1.0/24
+};
+
+zone "22.48.199.in-addr.arpa"
+{
+	type master;
+	file "/var/named/data/db.22.48.199";	# Sous-reseau public 199.48.22.0/24
+};
+
+zone "100.168.192.in-addr.arpa"
+{
+	type master;
+	file "/var/named/data/db.100.168.192";	# Zone DMZ 192.168.100.0
+};

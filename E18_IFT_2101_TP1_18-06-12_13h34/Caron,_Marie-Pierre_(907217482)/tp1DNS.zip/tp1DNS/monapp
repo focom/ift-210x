@@ -1,0 +1,185 @@
+#*************************************************************
+# Fichier : Menu
+# Projet : TP1
+# Auteur(s) : Marie-Pierre Caron 
+# Cours : Protocoles et technologies Internet
+# Session :Été 2018
+# Notes : TP1 question 1
+#************************************************************* 
+#*************************************************************
+# Fonction : quitter
+# Objectif : Vide l'écran et  affiche un message d'au revoir, attend 2 secondes et efface l'écran pour revenir au prompt
+# Notes :
+#*************************************************************
+function quitter
+{
+ clear
+ echo "Fin du programme.¡Hasta la vista! "
+ sleep 2
+ clear
+ exit
+} 
+
+#*************************************************************
+# Fonction :menuPrincipal
+# Objectif :Vide l'écran et affiche le menu principal
+# Notes :
+#*************************************************************
+function menuPrincipal
+{
+clear
+echo -e "Menu Principal \n"
+echo -e "1 : System \n"
+echo -e "2 : Réseau \n"
+echo -e "3 : Disque \n"
+echo -e "4 : Commandes spéciales \n"
+echo -e "5 : Quitter \n"
+echo -e " Votre choix :  "
+read choix
+case $choix in
+1) menuSystem ;;
+2) menuReseau ;;
+3) menuDisque ;;
+4) menuSpecial;;
+5) quitter ;;
+esac
+menuPrincipal
+}
+
+#*************************************************************
+# Fonction : menuSystem
+# Objectif : vide l'écran et affiche le sous-menu system
+# Notes :
+#************************************************************* 
+function menuSystem
+{
+clear
+echo -e "Menu Système \n"
+echo -e "1 : Top \n"
+echo -e "2 : Crond \n"
+echo -e "3 : MenuPrincipal \n"
+echo -e " Votre choix :  "
+read choix
+case $choix in
+1) top ;;
+2) lsof -c crond
+echo -e " Terminé?  "
+read termine ;;
+3) menuPrincipal;;
+esac
+menuSystem
+}
+
+#*************************************************************
+# Fonction : menuReseau
+# Objectif : vide l'écran et affiche le sous-menu réseau
+# Notes :
+#*************************************************************
+function menuReseau
+{
+clear
+echo -e "Menu Réseau \n"
+echo -e "1 : Socket en écoute localement \n"
+echo -e "2 : Socket ouverts distants\n"
+echo -e "3 : Page distante \n"
+echo -e "4 : Serveurs de noms \n"
+echo -e "5 : Serveur courriel \n"
+echo -e "6 : Menu Principal \n"
+echo -e " Votre choix :  "
+read choix
+case $choix in
+1) netstat -a | grep LISTENING 
+echo -e " Terminé?  "
+read termine ;;
+2) echo -e " Entrez une adresse IP:  "
+read adresseIp
+nmap $adresseIp | grep open 
+echo -e " Terminé?  "
+read termine ;;
+3)  echo -e " Entrez une adresse IP:  "
+read adresseIp
+GET $adresseIp
+echo -e " Terminé?  "
+read termine ;; 
+4)echo -e " Entrez un nom de domaine:  "
+read nomDomaine
+echo -e "Serveurs autoritaires  pour ce nom de domaine: \n  "
+dig ns $nomDomaine +short
+echo -e " Terminé?  "
+read termine ;;
+5)echo -e " Entrez un nom de domaine:  "
+read nomDomaine
+echo -e "Serveurs de courriels pour ce nom de domaine: \n  "
+dig mx  $nomDomaine +short
+echo -e " Terminé?  "
+read termine ;; 
+6) menuPrincipal;;
+esac
+menuReseau
+}
+
+#*************************************************************
+# Fonction : menuDisque
+# Objectif : vide l'écran et affiche le sous-menu disque
+# Notes :
+#*************************************************************
+function menuDisque
+{
+clear
+echo -e "Menu Réseau \n"
+echo -e "1 : Utilisation \n"
+echo -e "2 : Fichiers \n"
+echo -e "3 : Menu Principal \n"
+echo -e " Votre choix :  "
+read choix
+case $choix in
+1) du -ak /etc | more ;;
+2) df -ahkP
+ echo -e " Terminé?  "
+read termine;;
+3) menuPrincipal;;
+esac
+menuReseau
+}
+
+#*************************************************************
+# Fonction : menuSpecail
+# Objectif : vide l'écran et affiche le sous-menu spécial
+# Notes :
+#*************************************************************
+function menuSpecial
+{
+clear
+echo -e "Menu Spécial \n"
+echo -e "1 : Ajouter un fichier \n"
+echo -e "2 : Menu Principal \n"
+echo -e " Votre choix :  "
+read choix
+case $choix in
+1) echo -e "Ajouter un fichier \n"
+echo -e "Inscrire de nom du fichier: \n"
+read fichier
+touch  $fichier
+echo -e "Voulez-vous que ce fichier soit exécutable? \n"
+echo -e "1) oui \n"
+echo -e "2) non \n"
+read executable
+chmod 000 $fichier
+case $executable in
+1) chmod 777 $fichier
+esac
+echo -e " Terminé?  "
+read termine;;
+2)  menuPrincipal;;
+esac
+menuSpecial
+}
+#*************************************************************
+# Fonction :
+# Objectif : programme principal
+# Notes :
+#*************************************************************
+
+menuPrincipal
+
+

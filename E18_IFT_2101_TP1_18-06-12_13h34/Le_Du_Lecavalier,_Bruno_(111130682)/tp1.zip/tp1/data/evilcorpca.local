@@ -1,0 +1,15 @@
+@              IN    SOA    ns1.evilcorpca.com.     admin.evilcorpca.com. (
+                            2000101804
+                            8H
+                            2H
+                            1W
+                            1D  )
+;
+
+               IN   NS      ns1.evilcorpca.com.
+               IN   NS      ns2.evilcorpca.com.
+
+fichiers       IN   A       10.10.1.89
+passerelle     IN   A       10.10.1.1
+
+

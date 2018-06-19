@@ -1,0 +1,22 @@
+$ORIGIN evilcorp.ca.
+$TTL 86400 ; Durée maximale du cache.
+@       IN      SOA     evilcorpca.com. admin.evilcorpca.com. (
+                     	      1         ; Numéro de série. (Serial)
+                           3600         ; Rafraîchissement. (Refresh)
+                            900         ; Nouvelle tentative. (Retry)
+                        1209600         ; Expiration. (Expire)
+                          86400 )       ; Durée cache minimum. (TTL Minimum)
+
+;------------------------
+; Enregistrements NS.
+;------------------------
+; Serveurs de noms.
+@                                   IN      NS       ns1.evilcorpca.com.
+@                                   IN      NS       ns2.evilcorpca.com.
+
+;------------------------
+; Enregistrements PTR.
+;------------------------
+89	IN	PTR	fichiers.evilcorpca.local	; 10.10.1.89
+1	IN	PTR	passerelle.evilcorpca.local	; 10.10.1.1
+

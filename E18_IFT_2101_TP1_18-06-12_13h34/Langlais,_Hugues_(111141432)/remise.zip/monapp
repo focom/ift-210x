@@ -1,0 +1,276 @@
+#!/bin/bash
+
+#*****************************************************************
+#	Fichier	: TP1
+#	Projet	: travail pratique 1
+#	Auteur	: Hugues Langlais
+#	Cours	: Protocoles et technologies Internet
+#	Notes	: Les fontions sont place au dessus des menus qui les utilise (plus lisible), le main est a la fin
+#	Notes	: Ce programe utilise un "appuyer sur une touche" plutot que des sleeps pour sortir des affichages
+#*****************************************************************
+
+#*****************************************************************
+#  Fonction	: niceTop
+#  Objectif	: Affiche les processus en cours et le detail des threads
+#  Notes	:
+#*****************************************************************
+function niceTop
+{
+	top -H
+}
+
+#*****************************************************************
+#  Fonction	: cronHour
+#  Objectif	: Affiche les fichiers ouvert par cron
+#  Notes	: utilise la version hourly
+#*****************************************************************
+function cronhour
+{
+	echo -e "hourly cron jobs : "
+	ls -la /etc/cron.hourly/
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	: cbreak
+#  Objectif	: un clear suivit de break pour sortir de la fonction actuelle
+#  Notes	: Cette fonction est utilise a plusieurs endroits
+#*****************************************************************
+function cbreak
+{
+	clear
+	break
+}
+
+#*****************************************************************
+#  Fonction	: Systeme
+#  Objectif	: Affiche les diverses options du sous-menu systeme
+#  Notes	:
+#*****************************************************************
+function systeme
+{
+while : 
+do
+	clear
+	echo -e "Menu systeme, veuillez choisir une des 3 options suivantes :"
+	echo -e "1-Top"
+	echo -e "2-crond"
+	echo -e "3-revenir"
+	
+
+	read choix
+	case $choix in
+		1) niceTop ;;
+		2) cronhour ;;
+		3) cbreak ;;
+	esac
+
+done
+}
+
+#*****************************************************************
+#  Fonction	: listening
+#  Objectif	: liste tout les ports ouvert en ecoute sur le serveur
+#  Notes	: 
+#*****************************************************************
+function listening
+{
+	clear
+	netstat -a | grep LISTENING
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	:
+#  Objectif	: 
+#  Notes	:
+#*****************************************************************
+function digAuth
+{
+	echo -e "veuillez ecrire le nom du domaine : "
+	read nomDomaine
+	dig SOA +noall +answer  $nomDomaine
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	:
+#  Objectif	: 
+#  Notes	:
+#*****************************************************************
+function digEmail
+{
+	echo -e "veuillez ecrire le nom du domaine : "
+	read nomDomaineEmail
+	dig +noall +answer  $nomDomaineEmail MX
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	: socketOuvert
+#  Objectif	: Afficher les ports ouvert a partir d'une adresse IP
+#  Notes	: Ne fonctionne pas! 
+#*****************************************************************
+function socketOuvert
+{
+	echo -e "veuillez inscrire l'adresse IP (ne fonctionne pas) : "
+	read adresseIp
+	dig +noall +answer  $adesseIp MX
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	: pageDistante
+#  Objectif	: affiche le html d'une page distante avec son adresse Ip
+#  Notes	:
+#*****************************************************************
+function pageDistante
+{
+	echo -e "veuillez inscrire l'adresse IP : "
+	read adresseIpPage
+	curl $adresseIpPage
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+}
+
+#*****************************************************************
+#  Fonction	: resaux
+#  Objectif	: affichge le sous-menu resaux et ses options
+#  Notes	:
+#*****************************************************************
+function resaux
+{	
+while : 
+do
+	clear
+	echo -e "Menu systeme, veuillez choisir une des 6 options suivantes :"
+	echo -e "1-Socke sous ecoute (LISTENING) localement"
+	echo -e "2-Socket ouvert (distant)"
+	echo -e "3-Page distante"
+	echo -e "4-Serveur de noms"
+	echo -e "5-Serveur courriel"
+	echo -e "6-Revenir au menu principal"
+
+	read choix
+	case $choix in
+		1) listening ;;
+		2) socketOuvert ;;
+		3) pageDistante ;;
+		4) digAuth ;;
+		5) digEmail ;;
+		6) cbreak ;;
+	esac
+
+done
+}
+
+#*****************************************************************
+#  Fonction	: utilisation
+#  Objectif	: affiche les statistiqe d'utilisation en ko du dossier /etc
+#  Notes	:
+#*****************************************************************
+function utilisation
+{
+	echo -e "Utiliser : ^f pour descendre d'une page et ^b pour monter d'une page"
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+	du -h /etc --block-size=k | less
+}
+
+#*****************************************************************
+#  Fonction	: fichiers
+#  Objectif	: affiche les informations du systeme de fichier en 6 colonbnes de 1024 blocs
+#  Notes	:
+#*****************************************************************
+function fichiers
+{
+	echo -e "Utiliser : ^f pour descendre d'une page et ^b pour monter d'une page"
+	read -p "Appuyer sur une touche pour continuer..." -n1 -s
+	df -all -h --block-size=K | less
+}
+
+#*****************************************************************
+#  Fonction	: disque 
+#  Objectif	: affiche le sous-menu disque et ses options
+#  Notes	:
+#*****************************************************************
+function disque
+{	
+while : 
+do
+	clear
+	echo -e "Menu systeme, veuillez choisir une des 3 options suivantes :"
+	echo -e "1-Utilisation"
+	echo -e "2-Fichiers"
+	echo -e "3-Revenir au menu principal"
+
+	read choix
+	case $choix in
+		1) utilisation ;;
+		2) fichiers ;;
+		3) cbreak ;;
+	esac
+done
+}
+
+#*****************************************************************
+#  Fonction	: custom 
+#  Objectif	: Affiche le sous-menu custom et ses options
+#  Notes	:
+#*****************************************************************
+function disque
+{	
+while : 
+do
+	clear
+	echo -e "Menu creastif, veuillez choisir une des 3 options suivantes :"
+	echo -e "1-"
+	echo -e "2-Fichiers"
+	echo -e "3-Revenir au menu principal"
+
+	read choix
+	case $choix in
+		1) utilisation ;;
+		2) fichiers ;;
+		3) cbreak ;;
+	esac
+done
+}
+
+
+#*****************************************************************
+#  Fonction	: quitter
+#  Objectif	: affiche un message et quitte le programme apres 2 seconde
+#  Notes	:
+#*****************************************************************
+function quitter
+{
+	clear
+	echo -e "Fermeture du programme. Ouverture des keyloggers."
+	sleep 2
+	exit
+}
+
+#*****************************************************************
+#  Fonction	: main
+#  Objectif	: affiche le menu principal
+#  Notes	: 
+#*****************************************************************
+while : 
+do
+	clear
+	echo -e "Bienvenue, veuillez choisir une des 5 options suivantes :"
+	echo -e "1-Systeme"
+	echo -e "2-Resaux"
+	echo -e "3-Disque"
+	echo -e "4-Custom TODO"
+	echo -e "5-Quitter"
+
+	read choix
+	case $choix in
+		1) systeme ;;
+		2) resaux ;;
+		3) disque ;;
+		4) custom ;;
+		5) quitter ;;
+	esac
+done
+

@@ -1,0 +1,11 @@
+@ in soa localhost. root (
+	201806071	;serial
+	3H		;refresh period
+	15M		;retry refresh this often
+	1W		;expiration period
+	1D		;minimum TTL
+	)
+
+	IN	NS	DMZ	
+100	IN	PTR	http://secure.evilcorpca.com
+

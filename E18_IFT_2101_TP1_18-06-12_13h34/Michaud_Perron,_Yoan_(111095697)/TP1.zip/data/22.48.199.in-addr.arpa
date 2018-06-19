@@ -1,0 +1,10 @@
+@ IN SOA ns1.evilcorpca.com. yoan.michaud-perron.1.ulaval.ca 2 3H 15M 1W 1D
+        IN	NS	ns1.evilcorpca.com.
+	IN	NS	ns2.evilcorpca.com.
+199.48.22.99	IN	PTR     www.evilcorpca.com.
+199.48.22.100	IN	PTR     secure.evilcorpca.com.
+199.48.22.55	IN	PTR     courriel.evilcorpca.com.
+199.48.22.36	IN	PTR	webmail.evilcorpca.com.
+199.48.22.77	IN	PTR	vpn.evilcorpca.com.
+199.48.22.28	IN	PTR	ns1.evilcorpca.com.
+199.48.22.98	IN	PTR	ns2.evilcorpca.com.
